@@ -24,6 +24,7 @@ namespace Bloxshade
             parentForm.userControl21.Hide();
             parentForm.userControl31.Hide();
             parentForm.userControl41.Hide();
+            parentForm.userControl51.Hide();
             parentForm.userControl11.Show();
             parentForm.userControl11.BringToFront();
         }
@@ -53,44 +54,90 @@ namespace Bloxshade
                 "Roblox",
                 "Versions"
             );
-            string robloxProgramFilesFolderPath = @"C:\Program Files (x86)\Roblox\Versions";
+
+            // Bloxstrap path
+            string bloxstrapAppDataFolderPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "Bloxstrap",
+                "Versions"
+            );
+
+            // Nvidia path
+            string nvidiaFolderPath = @"C:\Program Files\NVIDIA Corporation";
+            string targetFolderName = "Ansel";
+            string nvidiaTargetFolderPath = Path.Combine(nvidiaFolderPath, targetFolderName);
 
             // check the Roblox folder path
             string robloxPlayerBetaExecutable = "RobloxPlayerBeta.exe";
             string robloxAnselExecutable = "eurotrucks2.exe";
-            string anselPath = null;
 
-            bool foundPlayerBetaInAppData = CheckForExecutable(robloxAppDataFolderPath, robloxPlayerBetaExecutable);
-            bool foundPlayerBetaInProgramFiles = CheckForExecutable(robloxProgramFilesFolderPath, robloxPlayerBetaExecutable);
+            // bloxstrap install
+            var bloxstrapTrue = false;
 
-            bool foundAnselInAppData = CheckForExecutable(robloxAppDataFolderPath, robloxAnselExecutable);
-            bool foundAnselInProgramFiles = CheckForExecutable(robloxProgramFilesFolderPath, robloxAnselExecutable);
+            // check for Bloxstrap
+            bool foundBloxstrapPlayerBetaInAppData = CheckForExecutable(bloxstrapAppDataFolderPath, robloxPlayerBetaExecutable);
+            bool foundBloxstrapAnselInAppData = CheckForExecutable(bloxstrapAppDataFolderPath, robloxAnselExecutable);
 
-            if (foundPlayerBetaInAppData || foundPlayerBetaInProgramFiles || foundAnselInAppData || foundAnselInProgramFiles)
+            if (foundBloxstrapPlayerBetaInAppData || foundBloxstrapAnselInAppData)
             {
-                // check for ansel only
-                if ((anselPath = CheckForAnsel(robloxAppDataFolderPath, robloxAnselExecutable)) != null)
+                bloxstrapTrue = true;
+            }
+            else
+            {
+                bloxstrapTrue = false;
+            }
+
+            // check for Roblox
+            if (bloxstrapTrue == false)
+            {
+                bool foundPlayerBetaInAppData = CheckForExecutable(robloxAppDataFolderPath, robloxPlayerBetaExecutable);
+                bool foundAnselInAppData = CheckForExecutable(robloxAppDataFolderPath, robloxAnselExecutable);
+                if (foundPlayerBetaInAppData || foundAnselInAppData)
                 {
-                    CreateShortcut(anselPath);
-                    string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-                    string shortcutPath = Path.Combine(desktopPath, "Roblox with Nvidia Ansel.symlink");
-                    MessageBox.Show(shortcutPath + " Roblox was renamed and shortcuts were successfully created; please start Roblox using those shortcuts.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else if ((anselPath = CheckForAnsel(robloxProgramFilesFolderPath, robloxAnselExecutable)) != null)
-                {
-                    CreateShortcut(anselPath);
-                    string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-                    string shortcutPath = Path.Combine(desktopPath, "Roblox with Nvidia Ansel.symlink");
-                    MessageBox.Show(shortcutPath + " Roblox was renamed and shortcuts were successfully created; please start Roblox using those shortcuts.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // pass
                 }
                 else
                 {
-                    // pass
+                    MessageBox.Show("Bloxshade cannot locate Roblox on this system.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    // abort
+                    return;
                 }
             }
             else
             {
-                MessageBox.Show("Bloxshade cannot locate Roblox on this system.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                // pass
+                // bloxstrap is true
+            }
+
+            // RobloxPlayerBeta file path
+            string anselPath = null;
+            string RobloxPlayerBetaExtractedFolderPath = Path.Combine(nvidiaTargetFolderPath, "RobloxPlayerBeta.exe");
+            if (bloxstrapTrue == true)
+            {
+                if ((anselPath = CheckForAnsel(bloxstrapAppDataFolderPath, robloxAnselExecutable)) != null)
+                {
+                    string destinationFilePath = Path.Combine(anselPath, "RobloxPlayerBeta.exe");
+                    if (File.Exists(destinationFilePath))
+                    {
+                        File.Delete(destinationFilePath);
+                    }
+                    File.Copy(RobloxPlayerBetaExtractedFolderPath, destinationFilePath);
+                    MessageBox.Show("Bloxstrap has been updated successfully.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            else
+            {
+                // add it for roblox
+                if ((anselPath = CheckForAnsel(robloxAppDataFolderPath, robloxAnselExecutable)) != null)
+                {
+                    string destinationFilePath = Path.Combine(anselPath, "RobloxPlayerBeta.exe");
+                    if (File.Exists(destinationFilePath))
+                    {
+                        File.Delete(destinationFilePath);
+                    }
+                    File.Copy(RobloxPlayerBetaExtractedFolderPath, destinationFilePath);
+                    MessageBox.Show("Roblox has been updated successfully.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
         }
         static string CheckForAnsel(string folderPath, string executableName)
@@ -107,7 +154,7 @@ namespace Bloxshade
                     string executablePath = Path.Combine(versionFolder.FullName, executableName);
                     if (File.Exists(executablePath))
                     {
-                        anselPath = executablePath;
+                        anselPath = versionFolder.FullName;
                         break;
                     }
                 }
@@ -169,7 +216,10 @@ namespace Bloxshade
                     string executablePath = Path.Combine(subDirectory.FullName, executableName);
                     if (File.Exists(executablePath))
                     {
-                        // pass
+                        if (executablePath.Contains("C:\\Program Files (x86)\\Roblox\\Versions"))
+                        {
+                            continue; // skip executable
+                        }
 
                         // rename the file
                         string newExecutablePath = Path.Combine(subDirectory.FullName, "eurotrucks2.exe");
@@ -193,28 +243,6 @@ namespace Bloxshade
                 }
             }
             return false;
-        }
-
-        static void CreateShortcut(string anselPath)
-        {
-            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            string shortcutPath = Path.Combine(desktopPath, "Roblox with Nvidia Ansel.symlink");
-
-            if (File.Exists(shortcutPath))
-            {
-                File.Delete(shortcutPath);
-            }
-
-            string targetPath = "\"" + anselPath + "\"";
-            string arguments = $"/c mklink \"{shortcutPath}\" {targetPath}";
-
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = "cmd",
-                Arguments = arguments,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            });
         }
 
         private void UserControl4_Load(object sender, EventArgs e)

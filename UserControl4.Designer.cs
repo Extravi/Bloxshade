@@ -60,7 +60,7 @@
             label2.Name = "label2";
             label2.Size = new Size(296, 48);
             label2.TabIndex = 2;
-            label2.Text = "Bloxshade is already installed, so you can\r\nupdate Roblox from here with shaders or reinstall.";
+            label2.Text = "Bloxshade is already installed, so you can\r\nmanage Roblox from here or configure install\r\nsettings.";
             // 
             // button1
             // 
@@ -70,7 +70,7 @@
             button1.FlatStyle = FlatStyle.Flat;
             button1.Font = new Font("Arial", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button1.ForeColor = Color.FromArgb(218, 229, 236);
-            button1.Location = new Point(8, 118);
+            button1.Location = new Point(8, 127);
             button1.Name = "button1";
             button1.Size = new Size(296, 27);
             button1.TabIndex = 3;
@@ -86,7 +86,7 @@
             button2.FlatStyle = FlatStyle.Flat;
             button2.Font = new Font("Arial", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button2.ForeColor = Color.FromArgb(218, 229, 236);
-            button2.Location = new Point(8, 202);
+            button2.Location = new Point(8, 211);
             button2.Name = "button2";
             button2.Size = new Size(296, 27);
             button2.TabIndex = 4;
@@ -99,7 +99,7 @@
             label3.AutoSize = true;
             label3.Font = new Font("Arial", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label3.ForeColor = Color.FromArgb(218, 229, 236);
-            label3.Location = new Point(8, 157);
+            label3.Location = new Point(8, 166);
             label3.MinimumSize = new Size(296, 20);
             label3.Name = "label3";
             label3.Size = new Size(296, 32);
@@ -114,7 +114,7 @@
             linkLabel1.DisabledLinkColor = Color.FromArgb(138, 180, 248);
             linkLabel1.LinkBehavior = LinkBehavior.HoverUnderline;
             linkLabel1.LinkColor = Color.FromArgb(138, 180, 248);
-            linkLabel1.Location = new Point(168, 329);
+            linkLabel1.Location = new Point(168, 328);
             linkLabel1.MinimumSize = new Size(136, 15);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(136, 15);
@@ -129,7 +129,7 @@
             label4.AutoSize = true;
             label4.Font = new Font("Arial", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label4.ForeColor = Color.FromArgb(218, 229, 236);
-            label4.Location = new Point(8, 243);
+            label4.Location = new Point(8, 252);
             label4.MinimumSize = new Size(296, 20);
             label4.Name = "label4";
             label4.Size = new Size(296, 20);
@@ -144,7 +144,7 @@
             button3.FlatStyle = FlatStyle.Flat;
             button3.Font = new Font("Arial", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button3.ForeColor = Color.FromArgb(218, 229, 236);
-            button3.Location = new Point(8, 275);
+            button3.Location = new Point(8, 284);
             button3.Name = "button3";
             button3.Size = new Size(296, 27);
             button3.TabIndex = 8;

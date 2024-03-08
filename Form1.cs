@@ -20,34 +20,13 @@ namespace Bloxshade
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // Roblox path
-            string robloxAppDataFolderPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "Roblox",
-                "Versions"
-            );
-            string robloxProgramFilesFolderPath = @"C:\Program Files (x86)\Roblox\Versions";
-
-            string robloxAnselExecutable = "eurotrucks2.exe";
-            string anselPath = null;
-
-            // check for ansel only
-            if ((anselPath = CheckForAnsel(robloxAppDataFolderPath, robloxAnselExecutable)) != null)
-            {
-                // install found
-            }
-            else if ((anselPath = CheckForAnsel(robloxProgramFilesFolderPath, robloxAnselExecutable)) != null)
-            {
-                // install found
-            }
-            else
-            {
                 userControl21.Hide();
                 userControl31.Hide();
                 userControl41.Hide();
+                userControl51.Hide();
+                userControl61.Hide();
                 userControl11.Show();
                 userControl11.BringToFront();
-            }
         }
 
         private void userControl11_Load(object sender, EventArgs e)

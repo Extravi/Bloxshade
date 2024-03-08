@@ -19,5 +19,11 @@
     <Compile Update="UserControl4.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="UserControl5.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UserControl6.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

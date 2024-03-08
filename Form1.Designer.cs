@@ -34,6 +34,8 @@
             userControl21 = new UserControl2();
             userControl31 = new UserControl3();
             userControl41 = new UserControl4();
+            userControl51 = new UserControl5();
+            userControl61 = new UserControl6();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -86,12 +88,32 @@
             userControl41.Size = new Size(330, 370);
             userControl41.TabIndex = 4;
             // 
+            // userControl51
+            // 
+            userControl51.BackColor = Color.FromArgb(17, 17, 17);
+            userControl51.Font = new Font("Arial", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            userControl51.Location = new Point(171, -1);
+            userControl51.Name = "userControl51";
+            userControl51.Size = new Size(330, 370);
+            userControl51.TabIndex = 5;
+            // 
+            // userControl61
+            // 
+            userControl61.BackColor = Color.FromArgb(17, 17, 17);
+            userControl61.Font = new Font("Arial", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            userControl61.Location = new Point(171, -1);
+            userControl61.Name = "userControl61";
+            userControl61.Size = new Size(330, 370);
+            userControl61.TabIndex = 6;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(17, 17, 17);
             ClientSize = new Size(504, 361);
+            Controls.Add(userControl61);
+            Controls.Add(userControl51);
             Controls.Add(userControl41);
             Controls.Add(userControl31);
             Controls.Add(userControl21);
@@ -116,5 +138,7 @@
         public UserControl1 userControl11;
         public UserControl2 userControl21;
         public UserControl4 userControl41;
+        public UserControl5 userControl51;
+        public UserControl6 userControl61;
     }
 }

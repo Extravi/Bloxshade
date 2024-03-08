@@ -32,6 +32,8 @@
             label1 = new Label();
             button1 = new Button();
             label2 = new Label();
+            linkLabel1 = new LinkLabel();
+            linkLabel2 = new LinkLabel();
             SuspendLayout();
             // 
             // label1
@@ -74,10 +76,48 @@
             label2.TabIndex = 2;
             label2.Text = resources.GetString("label2.Text");
             // 
+            // linkLabel1
+            // 
+            linkLabel1.ActiveLinkColor = Color.FromArgb(138, 180, 248);
+            linkLabel1.AutoSize = true;
+            linkLabel1.Cursor = Cursors.Hand;
+            linkLabel1.DisabledLinkColor = Color.FromArgb(138, 180, 248);
+            linkLabel1.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkLabel1.LinkColor = Color.FromArgb(138, 180, 248);
+            linkLabel1.Location = new Point(8, 330);
+            linkLabel1.MinimumSize = new Size(52, 15);
+            linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new Size(52, 15);
+            linkLabel1.TabIndex = 7;
+            linkLabel1.TabStop = true;
+            linkLabel1.Text = "Settings";
+            linkLabel1.VisitedLinkColor = Color.FromArgb(138, 180, 248);
+            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
+            // 
+            // linkLabel2
+            // 
+            linkLabel2.ActiveLinkColor = Color.FromArgb(138, 180, 248);
+            linkLabel2.AutoSize = true;
+            linkLabel2.Cursor = Cursors.Hand;
+            linkLabel2.DisabledLinkColor = Color.FromArgb(138, 180, 248);
+            linkLabel2.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkLabel2.LinkColor = Color.FromArgb(138, 180, 248);
+            linkLabel2.Location = new Point(66, 330);
+            linkLabel2.MinimumSize = new Size(115, 15);
+            linkLabel2.Name = "linkLabel2";
+            linkLabel2.Size = new Size(115, 15);
+            linkLabel2.TabIndex = 8;
+            linkLabel2.TabStop = true;
+            linkLabel2.Text = "Acknowledgements";
+            linkLabel2.VisitedLinkColor = Color.FromArgb(138, 180, 248);
+            linkLabel2.LinkClicked += linkLabel2_LinkClicked;
+            // 
             // UserControl1
             // 
             AutoScaleMode = AutoScaleMode.Inherit;
             BackColor = Color.FromArgb(17, 17, 17);
+            Controls.Add(linkLabel2);
+            Controls.Add(linkLabel1);
             Controls.Add(label2);
             Controls.Add(button1);
             Controls.Add(label1);
@@ -94,5 +134,7 @@
         private Label label1;
         private Button button1;
         private Label label2;
+        private LinkLabel linkLabel1;
+        private LinkLabel linkLabel2;
     }
 }

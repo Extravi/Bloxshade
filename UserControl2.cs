@@ -45,7 +45,13 @@ namespace Bloxshade
                     "Roblox",
                     "Versions"
                 );
-                string robloxProgramFilesFolderPath = @"C:\Program Files (x86)\Roblox\Versions";
+
+                // Bloxstrap path
+                string bloxstrapAppDataFolderPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    "Bloxstrap",
+                    "Versions"
+                );
 
                 // Nvidia path
                 string nvidiaFolderPath = @"C:\Program Files\NVIDIA Corporation";
@@ -124,25 +130,52 @@ namespace Bloxshade
                 string stormshadeshaders = "6dad6589fe505e998b01295dc6c647b031386e74.zip";
                 string stormshadeshadersshadersFilePath = Path.Combine(nvidiaTargetFolderPath, stormshadeshaders);
 
+                // RobloxPlayerBeta
+                string RobloxPlayerBeta = "RobloxPlayerBeta.zip";
+                string RobloxPlayerBetaFilePath = Path.Combine(nvidiaTargetFolderPath, RobloxPlayerBeta);
+
                 // check the Roblox folder path
                 string robloxPlayerBetaExecutable = "RobloxPlayerBeta.exe";
                 string robloxAnselExecutable = "eurotrucks2.exe";
 
-                bool foundPlayerBetaInAppData = CheckForExecutable(robloxAppDataFolderPath, robloxPlayerBetaExecutable);
-                bool foundPlayerBetaInProgramFiles = CheckForExecutable(robloxProgramFilesFolderPath, robloxPlayerBetaExecutable);
+                // bloxstrap install
+                var bloxstrapTrue = false;
 
-                bool foundAnselInAppData = CheckForExecutable(robloxAppDataFolderPath, robloxAnselExecutable);
-                bool foundAnselInProgramFiles = CheckForExecutable(robloxProgramFilesFolderPath, robloxAnselExecutable);
+                // check for Bloxstrap
+                bool foundBloxstrapPlayerBetaInAppData = CheckForExecutable(bloxstrapAppDataFolderPath, robloxPlayerBetaExecutable);
+                bool foundBloxstrapAnselInAppData = CheckForExecutable(bloxstrapAppDataFolderPath, robloxAnselExecutable);
 
-                if (foundPlayerBetaInAppData || foundPlayerBetaInProgramFiles || foundAnselInAppData || foundAnselInProgramFiles)
+                if (foundBloxstrapPlayerBetaInAppData || foundBloxstrapAnselInAppData)
                 {
-                    // pass
+                    richTextBox1.Text += "Bloxstrap installation found." + Environment.NewLine;
+                    bloxstrapTrue = true;
                 }
                 else
                 {
-                    richTextBox1.Text += "Roblox installation was not found." + Environment.NewLine;
-                    // abort
-                    return;
+                    bloxstrapTrue = false;
+                }
+
+                // check for Roblox
+                if (bloxstrapTrue == false)
+                {
+                    richTextBox1.Text += "Bloxstrap not found." + Environment.NewLine;
+                    bool foundPlayerBetaInAppData = CheckForExecutable(robloxAppDataFolderPath, robloxPlayerBetaExecutable);
+                    bool foundAnselInAppData = CheckForExecutable(robloxAppDataFolderPath, robloxAnselExecutable);
+                    if (foundPlayerBetaInAppData || foundAnselInAppData)
+                    {
+                        // pass
+                    }
+                    else
+                    {
+                        richTextBox1.Text += "Roblox installation was not found, or we cannot install Bloxshade because Roblox is installed in Program Files. https://www.roblox.com/download/client" + Environment.NewLine;
+                        // abort
+                        return;
+                    }
+                }
+                else
+                {
+                    // pass
+                    // bloxstrap is true
                 }
 
                 // check for Ansel folder path
@@ -182,6 +215,7 @@ namespace Bloxshade
                     "https://github.com/luluco250/FXShaders/archive/76365e35c48e30170985ca371e67d8daf8eb9a98.zip",
                     "https://github.com/crosire/reshade-shaders/archive/6b452c4a101ccb228c4986560a51c571473c517b.zip",
                     "https://github.com/Extravi/extravi.github.io/raw/main/update/ansel-presets.zip",
+                    "https://github.com/Extravi/bloxshade-args/releases/latest/download/RobloxPlayerBeta.zip",
                 };
 
                 foreach (string url in urls)
@@ -208,7 +242,8 @@ namespace Bloxshade
                     (FXShadersFilePath, "// FXShaders"),
                     (prod80FilePath, "// prod80"),
                     (dependenciesFilePath, "// dependencies"),
-                    (anselPresetsFilePath, "// ansel-presets")
+                    (anselPresetsFilePath, "// ansel-presets"),
+                    (RobloxPlayerBetaFilePath, "// RobloxPlayerBeta")
                 };
 
                 foreach (var fileInfo in filesToExtractAndDelete)
@@ -378,28 +413,42 @@ namespace Bloxshade
                 // cleanup problematic shaders
                 File.Delete(Path.Combine(nvidiaTargetFolderPath, "DOF.fx"));
 
-                // create shortcuts
+                // RobloxPlayerBeta file path
                 string anselPath = null;
-                if ((anselPath = CheckForAnsel(robloxAppDataFolderPath, robloxAnselExecutable)) != null)
+                string RobloxPlayerBetaExtractedFolderPath = Path.Combine(nvidiaTargetFolderPath, "RobloxPlayerBeta.exe");
+                if (bloxstrapTrue == true) 
                 {
-                    CreateShortcut(anselPath);
-                }
-                else if ((anselPath = CheckForAnsel(robloxProgramFilesFolderPath, robloxAnselExecutable)) != null)
-                {
-                    CreateShortcut(anselPath);
+                    if ((anselPath = CheckForAnsel(bloxstrapAppDataFolderPath, robloxAnselExecutable)) != null)
+                    {
+                        string destinationFilePath = Path.Combine(anselPath, "RobloxPlayerBeta.exe");
+                        if (File.Exists(destinationFilePath))
+                        {
+                            File.Delete(destinationFilePath);
+                        }
+                        File.Copy(RobloxPlayerBetaExtractedFolderPath, destinationFilePath);
+                    }
                 }
                 else
                 {
-                    // pass
+                    // add it for roblox
+                    if ((anselPath = CheckForAnsel(robloxAppDataFolderPath, robloxAnselExecutable)) != null)
+                    {
+                        string destinationFilePath = Path.Combine(anselPath, "RobloxPlayerBeta.exe");
+                        if (File.Exists(destinationFilePath))
+                        {
+                            File.Delete(destinationFilePath);
+                        }
+                        File.Copy(RobloxPlayerBetaExtractedFolderPath, destinationFilePath);
+                    }
                 }
 
-                richTextBox1.Text += "Finished installing." + Environment.NewLine;
 
                 // debug code
                 //return;
                 Form1 parentForm = (Form1)this.Parent;
                 parentForm.userControl21.Hide();
                 parentForm.userControl41.Hide();
+                parentForm.userControl51.Hide();
                 parentForm.userControl31.Show();
                 parentForm.userControl31.BringToFront();
             }
@@ -438,6 +487,11 @@ namespace Bloxshade
                         string executablePath = Path.Combine(subDirectory.FullName, executableName);
                         if (File.Exists(executablePath))
                         {
+                            if (executablePath.Contains("C:\\Program Files (x86)\\Roblox\\Versions"))
+                            {
+                                continue; // skip executable
+                            }
+
                             richTextBox1.Text += ($"Found {executableName} in: {subDirectory.FullName}" + Environment.NewLine);
 
                             // rename the file
@@ -485,35 +539,13 @@ namespace Bloxshade
                         string executablePath = Path.Combine(versionFolder.FullName, executableName);
                         if (File.Exists(executablePath))
                         {
-                            anselPath = executablePath;
+                            anselPath = versionFolder.FullName;
                             break;
                         }
                     }
                 }
 
                 return anselPath;
-            }
-
-            static void CreateShortcut(string anselPath)
-            {
-                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-                string shortcutPath = Path.Combine(desktopPath, "Roblox with Nvidia Ansel.symlink");
-
-                if (File.Exists(shortcutPath))
-                {
-                    File.Delete(shortcutPath);
-                }
-
-                string targetPath = "\"" + anselPath + "\"";
-                string arguments = $"/c mklink \"{shortcutPath}\" {targetPath}";
-
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = "cmd",
-                    Arguments = arguments,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                });
             }
         }
     }
