@@ -10,8 +10,6 @@ npm install @tauri-apps/cli
 ## Screenshot preview
 <img src="" width="600">
 
-## Authors
+## Authors & contact
 Made by [Extravi](https://extravi.dev/).
-
-## Contact
 Email: dante@extravi.dev
