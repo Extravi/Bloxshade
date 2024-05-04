@@ -12,4 +12,5 @@ npm install @tauri-apps/cli
 
 ## Authors & contact
 Made by [Extravi](https://extravi.dev/).
+
 Email: dante@extravi.dev
