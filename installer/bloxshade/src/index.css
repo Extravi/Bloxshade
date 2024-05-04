@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Inter:wght@400;700&family=Lato:wght@100;400&family=Nunito+Sans:opsz,wght@6..12,300;6..12,400;6..12,600;6..12,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital@0;1&display=swap');
+
+:root {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  scroll-behavior: smooth;
+}
+
+html {
+  background-color: #111111;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+h1 {
+  font-size: 1.2rem;
+  color: #dae5ec;
+  font-family: 'Inter', sans-serif;
+  margin: 0 0 1rem;
+}
+
+p {
+  font-size: 13px;
+  font-weight: 300;
+  max-width: 620px;
+  margin: 0 0 1rem;
+  color: #dae5ec;
+  font-family: 'Inter', sans-serif;
+}
+
+.side-img {
+  background-image: url('/src/extravi-reshade.bmp');
+  background-size: cover;
+  background-position: center;
+  width: 170px;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.content {
+  margin-left: 170px;
+  padding: 12px;
+  padding-right: 30px !important;
+  position: fixed;
+  background-color: #111111;
+  height: 100%;
+}
+
+.btn {
+  background-color: #1f1f1f;
+  color: #dae5ec;
+  font-family: 'Inter', sans-serif;
+  font-weight: lighter;
+  font-size: 16px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border: 1px solid #1f1f1f;
+  border-radius: 6px;
+  transition: all .3s ease;
+  float: right;
+  margin-top: 25px;
+  margin-right: -20px;
+}
+
+.btn:hover {
+  border: 1px solid #36383C;
+  cursor: pointer
+}
+
+a {
+  font-size: 13px;
+  font-weight: 300;
+  max-width: 620px;
+  margin: 0 0 1rem;
+  color: #8AB4F8;
+  font-family: 'Inter', sans-serif;
+}
+
+a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.settings {
+  position: fixed;
+  margin-top: 25px;
+}
+
+.installing {
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.textbox {
+  background-color: #1f1f1f;
+  height: 180px;
+  max-height: 180px;
+  width: 280px;
+  max-height: 280px;
+  overflow: auto;
+}
+
+.textbox p {
+  font-family: "Source Code Pro", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.btn-2 {
+  margin-top: 12px;
+  color: #9CA3AF !important;
+}
+
+.box {
+  font-size: 13px;
+  font-weight: 300;
+  color: #dae5ec;
+  font-family: 'Inter', sans-serif;
+  margin-left: 4px;
+}
+
+.container {
+  margin-bottom: 12px;
+}
+
+.btn-settings {
+  background-color: #1f1f1f;
+  color: #dae5ec;
+  font-family: 'Inter', sans-serif;
+  font-weight: lighter;
+  font-size: 14px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 3px;
+  padding-bottom: 6px;
+  border: 1px solid #1f1f1f;
+  border-radius: 6px;
+  transition: all .3s ease;
+  margin-top: 0px;
+  margin-bottom: 4px;
+  width: 100%;
+}
+
+.btn-settings:hover {
+  border: 1px solid #36383C;
+  cursor: pointer
+}
+
+.p-settings {
+  margin-top: 6px;
+}
+
+.settings-settings {
+  margin-top: 5px;
+  float: right;
+}
+
+.extravi {
+  float: right !important;
+  margin-right: 10px;
+}
+
+.uwu {
+  float: left !important;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
