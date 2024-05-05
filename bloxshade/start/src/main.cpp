@@ -50,8 +50,23 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     }
 
     // kill any running process that may have the folder open
-    WinExec("taskkill /F /IM installer.exe", SW_HIDE);
-    WinExec("taskkill /F /IM setup.exe", SW_HIDE);
+    std::wstring killCommandInstaller = L"cmd.exe /c taskkill /F /IM installer.exe";
+    std::wstring killCommandSetup = L"cmd.exe /c taskkill /F /IM setup.exe";
+
+    // create process parameters
+    auto createAndCloseProcess = [](const std::wstring& command) {
+        STARTUPINFOW si = { sizeof(STARTUPINFO) };
+        PROCESS_INFORMATION pi;
+        if (CreateProcessW(NULL, const_cast<LPWSTR>(command.c_str()), NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &si, &pi)) {
+            WaitForSingleObject(pi.hProcess, INFINITE);
+            CloseHandle(pi.hProcess);
+            CloseHandle(pi.hThread);
+        }
+        };
+
+    // wait for process to finish
+    createAndCloseProcess(killCommandInstaller);
+    createAndCloseProcess(killCommandSetup);
 
     if (fs::exists(bloxshadePath)) {
         std::cout << "Bloxshade folder true" << std::endl;
