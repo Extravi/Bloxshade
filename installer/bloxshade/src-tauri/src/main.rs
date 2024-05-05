@@ -11,7 +11,7 @@ fn cmd(executable_path: String, arguments: String) {
     println!("Executing command: {} {}", executable_path, arguments);
     
     let child = Command::new(&executable_path)
-        .arg(&arguments)
+        .args(&arguments.split_whitespace().collect::<Vec<&str>>())
         .spawn()
         .expect("failed to start installer");
 }

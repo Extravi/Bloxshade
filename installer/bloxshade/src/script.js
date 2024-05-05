@@ -54,6 +54,20 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // wait for user presets
+    waitForElementToExist("userPresets", function () {
+        document.getElementById("userPresets").addEventListener("click", function () {
+            var element0 = document.getElementById("con-4");
+            var element1 = document.getElementById("con-2");
+
+            element0.classList.remove("show");
+            element0.classList.add("hide");
+
+            element1.classList.remove("hide");
+            element1.classList.add("show");
+        });
+    });
+
     // wait for checkbox
     waitForElementToExist("box-0", function () {
         document.getElementById("box-0").checked = true;

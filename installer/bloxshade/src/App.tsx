@@ -1,9 +1,33 @@
+import { useEffect, useState } from 'react';
 import { open } from '@tauri-apps/api/shell';
 import { fs } from '@tauri-apps/api';
 import { invoke } from '@tauri-apps/api/tauri';
 import './script.js';
 
+interface Preset {
+  title: string;
+  description: string;
+  author: string;
+  source: string;
+}
+
 function App() {
+  const [presets, setPresets] = useState<Preset[]>([]);
+
+  useEffect(() => {
+    fetchPresets();
+  }, []);
+
+  const fetchPresets = async () => {
+    try {
+      const response = await fetch('https://extravi.dev/update/presets.json');
+      const data = await response.json();
+      setPresets(data.presets);
+    } catch (error) {
+      console.error('Error fetching presets:', error);
+    }
+  };
+
   const openLink = async (url: string) => {
     try {
       await open(url);
@@ -62,7 +86,7 @@ function App() {
 
             // done installing go to last page
             const element1: HTMLElement | null = document.getElementById("con-1");
-            const element2: HTMLElement | null = document.getElementById("con-2");
+            const element2: HTMLElement | null = document.getElementById("con-4");
 
             if (element1 && element2) {
               element1.classList.remove("show");
@@ -145,6 +169,17 @@ function App() {
       console.error(error);
     }
   }
+
+  const userPreset = async (source: string) => {
+    const bloxshadeFolderPath = 'C:\\Program Files\\Bloxshade';
+    try {
+      console.log(source);
+      // todo
+      invoke('cmd', { executable_path: `${bloxshadeFolderPath}\\installer.exe`, arguments: `-install "${source}"` });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -230,6 +265,23 @@ function App() {
         <a id="dis" className="settings-settings" onClick={() => openLink('https://discord.com/invite/TNG5yHsEwu')}>Join our Discord server.</a>
         <a className="settings-settings extravi" onClick={() => openLink('https://extravi.dev/')}>extravi.dev</a>
         <a id="uwu" className="settings-settings uwu">Back</a>
+      </div>
+      {/* content 4 */}
+      <div id="con-4" className="content hide">
+        <h1>Community presets</h1>
+        <p className="c-settings">Download and install community presets</p>
+        <div className='results'>
+          {presets.map((preset, index) => (
+            <div key={index} className={index === 0 ? 'results-div-1' : 'results-div'}>
+              <div className='results-row'>
+                <p><span>{preset.title}</span></p>
+                <p><span>{preset.description}</span></p>
+                <p><span className="highlight">Author: </span><span>{preset.author}</span><a className='uwu-rar' onClick={() => userPreset(preset.source)}>Install</a></p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <button id="userPresets" className="btn btn-p">Next</button>
       </div>
     </>
   )
