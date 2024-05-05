@@ -49,6 +49,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         return 0;
     }
 
+    // kill any running process that may have the folder open
+    WinExec("taskkill /F /IM installer.exe", SW_HIDE);
+    WinExec("taskkill /F /IM setup.exe", SW_HIDE);
+
     if (fs::exists(bloxshadePath)) {
         std::cout << "Bloxshade folder true" << std::endl;
         fs::remove_all(bloxshadePath);

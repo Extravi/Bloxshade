@@ -25,6 +25,9 @@ std::vector<std::string> file_names;
 bool import = false;
 bool shortcutarg = false;
 bool fix = false;
+std::wstring url;
+std::string userPreset;
+bool install = false;
 
 // nvidia paths
 const std::string anselPath = "C:\\Program Files\\NVIDIA Corporation\\Ansel";
@@ -99,7 +102,7 @@ std::string extractFileName(const std::string& url) {
     return url.substr(found + 1);
 }
 
-void downloadFile(const std::string& url, const std::string& outputDirectory, bool list) {
+void downloadFile(const std::string& url, const std::string& outputDirectory, bool list, bool install) {
     // file path and name
     std::string fileName = url.substr(url.find_last_of('/') + 1);
     std::string outputPath = outputDirectory + "\\" + fileName;
@@ -126,6 +129,9 @@ void downloadFile(const std::string& url, const std::string& outputDirectory, bo
     // add the file names to the file_names vector if list is true
     if (list) {
         file_names.push_back(fileName);
+    }
+    if (install) {
+        userPreset = fileName;
     }
 }
 
@@ -167,7 +173,7 @@ void moveFile(const std::string& sourceFilePath, const std::string& destinationF
 
 void shortcut() {
     // download RobloxPlayerBeta.exe shortcut
-    downloadFile("https://github.com/Extravi/bloxshade-args/releases/latest/download/RobloxPlayerBeta.zip", defaultPath, list = false);
+    downloadFile("https://github.com/Extravi/bloxshade-args/releases/latest/download/RobloxPlayerBeta.zip", defaultPath, list = false, install = false);
     extractFile(defaultPath + "\\RobloxPlayerBeta.zip", defaultPath);
     fs::remove(defaultPath + "\\RobloxPlayerBeta.zip");
     std::cout << "Installed shortcut" << std::endl;
@@ -208,6 +214,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         return 1;
     }
 
+    // comment out for output
+    output();
+
     // process arguments
     for (int i = 1; i < argc; ++i) {
         std::wstring arg = argv[i];
@@ -220,6 +229,19 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         else if (arg == L"-fix") {
             fix = true;
         }
+        else if (arg == L"-install" && i + 1 < argc) {
+            std::cout << "Community presets arg called" << std::endl;
+            url = argv[++i];
+            std::string url_str(url.begin(), url.end());
+            url_str.erase(std::remove(url_str.begin(), url_str.end(), '\"'), url_str.end());
+            std::cout << url_str << std::endl;
+            downloadFile(url_str, anselPath, list = false, install = true);
+            std::string presetsToMove = "\\" + userPreset;
+            extractFile(anselPath + presetsToMove, presetsPath);
+            fs::remove(anselPath + presetsToMove);
+            MessageBoxW(NULL, L"Community presets were installed successfully.", L"Success", MB_OK | MB_ICONINFORMATION);
+            return 0;
+        }
         else {
             // pass
         }
@@ -227,9 +249,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
     // free memory allocated by CommandLineToArgvW
     LocalFree(argv);
-
-    // comment out for output
-    output();
 
     // roblox path
     RegGetValueA(HKEY_CLASSES_ROOT, "roblox-player\\shell\\open\\command", nullptr, RRF_RT_REG_SZ, nullptr, value, &valueSize);
@@ -472,7 +491,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
     // download files
     for (const std::string& url : urls) {
-        downloadFile(url, anselPath, list = true);
+        downloadFile(url, anselPath, list = true, install = false);
     }
 
     // extract files

@@ -146,7 +146,6 @@
   <ItemGroup>
     <None Include="res\installer.exe" />
     <None Include="res\setup.exe" />
-    <None Include="start.aps" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\extravi-reshade.ico" />
