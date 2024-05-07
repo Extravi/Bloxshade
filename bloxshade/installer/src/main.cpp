@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <cstring>
@@ -61,6 +61,8 @@ std::vector<std::string> urls = {
     "https://github.com/BlueSkyDefender/AstrayFX/archive/910e3213a846b34dd65d94e84b61b61fca69dd6d.zip",
     "https://github.com/luluco250/FXShaders/archive/76365e35c48e30170985ca371e67d8daf8eb9a98.zip",
     "https://github.com/crosire/reshade-shaders/archive/6b452c4a101ccb228c4986560a51c571473c517b.zip",
+    "https://github.com/papadanku/CShade/archive/992f9bca4d17483e719505240536f4157d014dac.zip",
+    "https://github.com/Fubaxiusz/fubax-shaders-dev/archive/023c080ac489fbe09b1c8e2975eaee340d7a0745.zip",
     "https://github.com/Extravi/extravi.github.io/raw/main/update/ansel-presets.zip"
 };
 
@@ -90,7 +92,9 @@ std::vector<std::string> paths = {
     "\\dh-reshade-shaders-f3ca553f9012caced93f273890d20ea427865fd5\\Textures",
     "\\AstrayFX-910e3213a846b34dd65d94e84b61b61fca69dd6d\\Shaders", // AstrayFX
     "\\FXShaders-76365e35c48e30170985ca371e67d8daf8eb9a98\\Shaders", // FXShaders
-    "\\FXShaders-76365e35c48e30170985ca371e67d8daf8eb9a98\\Textures"
+    "\\FXShaders-76365e35c48e30170985ca371e67d8daf8eb9a98\\Textures",
+    "\\CShade-992f9bca4d17483e719505240536f4157d014dac\\shaders", // CShade
+    "\\fubax-shaders-dev-023c080ac489fbe09b1c8e2975eaee340d7a0745\\Shaders" // fubax shaders dev
 };
 
 // download files
@@ -109,7 +113,7 @@ void downloadFile(const std::string& url, const std::string& outputDirectory, bo
 
     // convert narrow-character strings to wide-character strings
     std::wstring wOutputPath(outputPath.begin(), outputPath.end());
-    std::wstring wCommand = L"curl -L -o \"" + wOutputPath + L"\" \"" + std::wstring(url.begin(), url.end()) + L"\"";
+    std::wstring wCommand = L"cmd.exe /c powershell -Command \"$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri '" + std::wstring(url.begin(), url.end()) + L"' -OutFile '" + wOutputPath + L"'\"";
 
     // command to download the file
     std::cout << "Downloading: " << fileName << std::endl;
