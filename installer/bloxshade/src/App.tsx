@@ -351,7 +351,7 @@ function App() {
           </div>
           <div className='results-div'>
             <div className='results-row'>
-              <p><span>AcMotionBlur</span></p>
+              <p><span>cMotionBlur</span></p>
               <p><span className="highlight">Author: </span><span>papadanku</span><a className='uwu-rar' onClick={() => openLink('https://github.com/papadanku')}>Visit</a></p>
             </div>
           </div>
