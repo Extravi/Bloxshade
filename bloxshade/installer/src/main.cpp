@@ -1,3 +1,7 @@
+// Description: Bloxshade installer source code.
+// Author: Dante (dante@extravi.dev)
+// Date: 2024-05-08
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -61,7 +65,10 @@ std::vector<std::string> urls = {
     "https://github.com/BlueSkyDefender/AstrayFX/archive/910e3213a846b34dd65d94e84b61b61fca69dd6d.zip",
     "https://github.com/luluco250/FXShaders/archive/76365e35c48e30170985ca371e67d8daf8eb9a98.zip",
     "https://github.com/crosire/reshade-shaders/archive/6b452c4a101ccb228c4986560a51c571473c517b.zip",
-    "https://github.com/Extravi/extravi.github.io/raw/main/update/ansel-presets.zip"
+    "https://github.com/Extravi/extravi.github.io/raw/main/update/ansel-presets.zip",
+    "https://github.com/Extravi/ansel-shaders/archive/c286b39f3dc680c6c98f154f512a5109e213aa67.zip",
+    "https://github.com/bituq/ZealShaders/archive/e4753908efda49d5423f4e0395161608c9207e2e.zip",
+    "https://github.com/Fubaxiusz/fubax-shaders-dev/archive/023c080ac489fbe09b1c8e2975eaee340d7a0745.zip"
 };
 
 //file paths
@@ -90,7 +97,12 @@ std::vector<std::string> paths = {
     "\\dh-reshade-shaders-f3ca553f9012caced93f273890d20ea427865fd5\\Textures",
     "\\AstrayFX-910e3213a846b34dd65d94e84b61b61fca69dd6d\\Shaders", // AstrayFX
     "\\FXShaders-76365e35c48e30170985ca371e67d8daf8eb9a98\\Shaders", // FXShaders
-    "\\FXShaders-76365e35c48e30170985ca371e67d8daf8eb9a98\\Textures"
+    "\\FXShaders-76365e35c48e30170985ca371e67d8daf8eb9a98\\Textures",
+    "\\ansel-shaders-c286b39f3dc680c6c98f154f512a5109e213aa67\\cMotionBlur", // Extravi shader archive
+    "\\ansel-shaders-c286b39f3dc680c6c98f154f512a5109e213aa67\\Zeal_RimLight",
+    "\\ZealShaders-e4753908efda49d5423f4e0395161608c9207e2e\\Shaders", // ZealShaders
+    "\\fubax-shaders-dev-023c080ac489fbe09b1c8e2975eaee340d7a0745\\Shaders", // fubax Shaders dev
+    "\\fubax-shaders-dev-023c080ac489fbe09b1c8e2975eaee340d7a0745\\Textures"
 };
 
 // download files
@@ -534,10 +546,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
     // remove files outside of the loop
     fs::remove_all(anselPath + "\\ansel-presets");
+    fs::remove(anselPath + "\\LICENSE");
 
     // cleanup problematic shaders
     fs::remove(anselPath + "\\DOF.fx");
     fs::remove(anselPath + "\\FakeMotionBlur.fx");
+    fs::remove(anselPath + "\\MotionBlur.fx");
     fs::remove(anselPath + "\\NiceGuy_Lamps.fx");
 
     // exit output
