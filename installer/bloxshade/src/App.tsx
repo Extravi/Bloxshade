@@ -205,6 +205,7 @@ function App() {
           Click Install to continue.
         </p>
         <a id="set" className="settings">Settings</a>
+        <a id="set-acknowledgements" className="settings con-0">Acknowledgements</a>
         <button id="install" className="btn" onClick={createBloxshadeFolder}>Install</button>
       </div>
       {/* content 1 */}
@@ -282,6 +283,92 @@ function App() {
           ))}
         </div>
         <button id="userPresets" className="btn btn-p">Next</button>
+      </div>
+      {/* content 5 */}
+      <div id="con-5" className="content hide">
+        <h1>Acknowledgements</h1>
+        <p className="c-settings">Open source repositories Bloxshade uses</p>
+        <div className='results'>
+          <div className='results-div-1'>
+            <div className='results-row'>
+              <p><span>dh-reshade-shaders</span></p>
+              <p><span className="highlight">Author: </span><span>AlucardDH</span><a className='uwu-rar' onClick={() => openLink('https://github.com/AlucardDH')}>Visit</a></p>
+            </div>
+          </div>
+          <div className='results-div'>
+            <div className='results-row'>
+              <p><span>AstrayFX</span></p>
+              <p><span className="highlight">Author: </span><span>BlueSkyDefender</span><a className='uwu-rar' onClick={() => openLink('https://github.com/BlueSkyDefender')}>Visit</a></p>
+            </div>
+          </div>
+          <div className='results-div'>
+            <div className='results-row'>
+              <p><span>SweetFX</span></p>
+              <p><span className="highlight">Author: </span><span>CeeJayDK</span><a className='uwu-rar' onClick={() => openLink('https://github.com/CeeJayDK')}>Visit</a></p>
+            </div>
+          </div>
+          <div className='results-div'>
+            <div className='results-row'>
+              <p><span>Bloxshade</span></p>
+              <p><span className="highlight">Author: </span><span>Extravi</span><a className='uwu-rar' onClick={() => openLink('https://github.com/Extravi')}>Visit</a></p>
+            </div>
+          </div>
+          <div className='results-div'>
+            <div className='results-row'>
+              <p><span>fubax-shaders</span></p>
+              <p><span className="highlight">Author: </span><span>Fubaxiusz</span><a className='uwu-rar' onClick={() => openLink('https://github.com/Fubaxiusz')}>Visit</a></p>
+            </div>
+          </div>
+          <div className='results-div'>
+            <div className='results-row'>
+              <p><span>reshade-shaders</span></p>
+              <p><span className="highlight">Author: </span><span>crosire</span><a className='uwu-rar' onClick={() => openLink('https://github.com/crosire')}>Visit</a></p>
+            </div>
+          </div>
+          <div className='results-div'>
+            <div className='results-row'>
+              <p><span>FXShaders</span></p>
+              <p><span className="highlight">Author: </span><span>luluco250</span><a className='uwu-rar' onClick={() => openLink('https://github.com/luluco250')}>Visit</a></p>
+            </div>
+          </div>
+          <div className='results-div'>
+            <div className='results-row'>
+              <p><span>qUINT</span></p>
+              <p><span className="highlight">Author: </span><span>martymcmodding</span><a className='uwu-rar' onClick={() => openLink('https://github.com/martymcmodding')}>Visit</a></p>
+            </div>
+          </div>
+          <div className='results-div'>
+            <div className='results-row'>
+              <p><span>NiceGuy-Shaders</span></p>
+              <p><span className="highlight">Author: </span><span>mj-ehsan</span><a className='uwu-rar' onClick={() => openLink('https://github.com/mj-ehsan')}>Visit</a></p>
+            </div>
+          </div>
+          <div className='results-div'>
+            <div className='results-row'>
+              <p><span>ZealShaders</span></p>
+              <p><span className="highlight">Author: </span><span>bituq</span><a className='uwu-rar' onClick={() => openLink('https://github.com/bituq')}>Visit</a></p>
+            </div>
+          </div>
+          <div className='results-div'>
+            <div className='results-row'>
+              <p><span>AcMotionBlur</span></p>
+              <p><span className="highlight">Author: </span><span>papadanku</span><a className='uwu-rar' onClick={() => openLink('https://github.com/papadanku')}>Visit</a></p>
+            </div>
+          </div>
+          <div className='results-div'>
+            <div className='results-row'>
+              <p><span>prod80-ReShade-Repository</span></p>
+              <p><span className="highlight">Author: </span><span>prod80</span><a className='uwu-rar' onClick={() => openLink('https://github.com/prod80')}>Visit</a></p>
+            </div>
+          </div>
+          <div className='results-div'>
+            <div className='results-row'>
+              <p><span>Glamarye_Fast_Effects_for_ReShade</span></p>
+              <p><span className="highlight">Author: </span><span>rj200</span><a className='uwu-rar' onClick={() => openLink('https://github.com/rj200')}>Visit</a></p>
+            </div>
+          </div>
+        </div>
+        <a id="acknowledgements" className="settings">Back</a>
       </div>
     </>
   )

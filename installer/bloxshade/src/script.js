@@ -68,6 +68,34 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // wait for acknowledgements
+    waitForElementToExist("acknowledgements", function () {
+        document.getElementById("acknowledgements").addEventListener("click", function () {
+            var element0 = document.getElementById("con-5");
+            var element1 = document.getElementById("con-0");
+
+            element0.classList.remove("show");
+            element0.classList.add("hide");
+
+            element1.classList.remove("hide");
+            element1.classList.add("show");
+        });
+    });
+
+    // wait for set-acknowledgements
+    waitForElementToExist("set-acknowledgements", function () {
+        document.getElementById("set-acknowledgements").addEventListener("click", function () {
+            var element0 = document.getElementById("con-0");
+            var element1 = document.getElementById("con-5");
+
+            element0.classList.remove("show");
+            element0.classList.add("hide");
+
+            element1.classList.remove("hide");
+            element1.classList.add("show");
+        });
+    });
+
     // wait for checkbox
     waitForElementToExist("box-0", function () {
         document.getElementById("box-0").checked = true;
