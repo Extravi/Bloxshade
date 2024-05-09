@@ -121,7 +121,7 @@ void downloadFile(const std::string& url, const std::string& outputDirectory, bo
 
     // convert narrow-character strings to wide-character strings
     std::wstring wOutputPath(outputPath.begin(), outputPath.end());
-    std::wstring wCommand = L"cmd.exe /c powershell -Command \"$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri '" + std::wstring(url.begin(), url.end()) + L"' -OutFile '" + wOutputPath + L"'\"";
+    std::wstring wCommand = L"powershell -Command \"$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri '" + std::wstring(url.begin(), url.end()) + L"' -OutFile '" + wOutputPath + L"'\"";
 
     // command to download the file
     std::cout << "Downloading: " << fileName << std::endl;
@@ -153,7 +153,7 @@ void extractFile(const std::string& filePath, const std::string& outputDirectory
     // ps command
     std::wstring wFilePath(filePath.begin(), filePath.end());
     std::wstring wOutputDirectory(outputDirectory.begin(), outputDirectory.end());
-    std::wstring wCommand = L"cmd.exe /c powershell -Command \"$ProgressPreference = 'SilentlyContinue'; Expand-Archive -Path '" + wFilePath + L"' -DestinationPath '" + wOutputDirectory + L"'\"";
+    std::wstring wCommand = L"powershell -Command \"$ProgressPreference = 'SilentlyContinue'; Expand-Archive -Path '" + wFilePath + L"' -DestinationPath '" + wOutputDirectory + L"'\"";
 
     // create process parameters
     STARTUPINFOW si = { sizeof(STARTUPINFO) };
