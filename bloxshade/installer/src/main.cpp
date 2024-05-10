@@ -106,14 +106,6 @@ std::vector<std::string> paths = {
 };
 
 // download files
-std::string extractFileName(const std::string& url) {
-    // last '/' in the url for the file name
-    size_t found = url.find_last_of("/");
-
-    // return file name
-    return url.substr(found + 1);
-}
-
 void downloadFile(const std::string& url, const std::string& outputDirectory, bool list, bool install) {
     // file path and name
     std::string fileName = url.substr(url.find_last_of('/') + 1);
@@ -263,7 +255,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     LocalFree(argv);
 
     // roblox path
-    RegGetValueA(HKEY_CLASSES_ROOT, "roblox-player\\shell\\open\\command", nullptr, RRF_RT_REG_SZ, nullptr, value, &valueSize);
+    RegGetValueA(HKEY_CURRENT_USER, "Software\\Classes\\roblox-player\\shell\\open\\command", nullptr, RRF_RT_REG_SZ, nullptr, value, &valueSize);
 
     // convert to C++ string
     std::string robloxPath(value);
@@ -278,6 +270,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     }
     else {
         std::cout << "Roblox install found" << std::endl;
+        std::cout << robloxPath << std::endl;
     }
 
     // kill any running Roblox process
@@ -342,6 +335,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         defaultPath = path;
         defaultPath.replace(RobloxPos, strlen("RobloxPlayerBeta.exe"), "");
         defaultPath.erase(defaultPath.find_last_of('\\'));
+    }
+
+    // check the path
+    std::cout << "Path to check: " << path << std::endl;
+    if (path.find("C:\\Program Files") == 0 || path.find("C:\\Program Files (x86)") == 0) {
+        std::cout << "Program files is true" << std::endl;
+        MessageBox(NULL, L"It seems like Roblox is installed system-wide in the Program Files directory. Please install Roblox in a location other than the Program Files directory.", L"Information", MB_OK | MB_ICONWARNING);
+        return 0;
+    }
+    else {
+        std::cout << "Program files is false" << std::endl;
     }
 
     // shortcut arg called reinstall shortcut
