@@ -19,8 +19,8 @@ fn cmd(executable_path: String, arguments: String) {
 fn main() {
     #[cfg(target_os = "windows")]
     unsafe {
-        use winapi::um::shellscalingapi::{SetProcessDpiAwareness, PROCESS_SYSTEM_DPI_AWARE};
-        let result = SetProcessDpiAwareness(PROCESS_SYSTEM_DPI_AWARE);
+        use winapi::um::shellscalingapi::{SetProcessDpiAwareness, PROCESS_PER_MONITOR_DPI_AWARE};
+        let result = SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
         if result != 0 {
             println!("Error setting DPI awareness: {}", result);
         }
