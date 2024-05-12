@@ -252,7 +252,7 @@ function App() {
             <span className="box">Visit extravi.dev</span>
           </label>
         </div>
-        <button className="btn" onClick={checkCheckboxStatus}>Finish</button>
+        <button className="btn btn-uwu" onClick={checkCheckboxStatus}>Finish</button>
       </div>
       {/* content 3 */}
       <div id="con-3" className="content hide">
