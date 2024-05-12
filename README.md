@@ -1,6 +1,8 @@
 # Bloxshade
 Bloxshade installer source code.
 
+[![Downloads](https://img.shields.io/github/downloads/Extravi/Bloxshade/total)](https://github.com/Extravi/Bloxshade/releases)
+
 ## Note
 To compile the Tauri app, you will need to install the Tauri CLI package.
 ```
