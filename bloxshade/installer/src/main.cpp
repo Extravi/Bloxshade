@@ -16,6 +16,13 @@ using json = nlohmann::json;
 // namespace for fs
 namespace fs = std::filesystem;
 
+// curl
+#define CURL_STATICLIB
+#include "curl/curl.h"
+
+// fopen
+#pragma warning(disable : 4996)
+
 // variables 
 char value[MAX_PATH];
 DWORD valueSize = sizeof(value);
@@ -106,36 +113,66 @@ std::vector<std::string> paths = {
 };
 
 // download files
-void downloadFile(const std::string& url, const std::string& outputDirectory, bool list, bool install) {
+size_t writedata(char* ptr, size_t size, size_t nmemb, void* stream) {
+    return fwrite(ptr, size, nmemb, (FILE*)stream);
+}
+
+void downloadFile(const std::string& url, const std::string& outputdirectory, bool list, bool install) {
     // file path and name
-    std::string fileName = url.substr(url.find_last_of('/') + 1);
-    std::string outputPath = outputDirectory + "\\" + fileName;
+    std::string filename = url.substr(url.find_last_of('/') + 1);
+    std::string outputpath = outputdirectory + "\\" + filename;
 
-    // convert narrow-character strings to wide-character strings
-    std::wstring wOutputPath(outputPath.begin(), outputPath.end());
-    std::wstring wCommand = L"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -Command \"$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri '" + std::wstring(url.begin(), url.end()) + L"' -OutFile '" + wOutputPath + L"'\"";
+    // open a new curl handle
+    CURL* curl = curl_easy_init();
 
-    // command to download the file
-    std::cout << "Downloading: " << fileName << std::endl;
+    if (curl) {
+        // set download URL
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
-    // create process parameters
-    STARTUPINFOW si = { sizeof(STARTUPINFO) };
-    PROCESS_INFORMATION pi;
-    BOOL success = CreateProcessW(NULL, const_cast<LPWSTR>(wCommand.c_str()), NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &si, &pi);
+        // follow redirects
+        curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 
-    // wait for process to finish
-    if (success) {
-        WaitForSingleObject(pi.hProcess, INFINITE);
-        CloseHandle(pi.hProcess);
-        CloseHandle(pi.hThread);
+        // open output file for writing
+        FILE* outputfile = fopen(outputpath.c_str(), "wb");
+
+        if (outputfile) {
+            // set write callback function
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writedata);
+
+            // set userdata for write callback
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, outputfile);
+
+            // perform the download operation
+            CURLcode res = curl_easy_perform(curl);
+
+            // close output file
+            fclose(outputfile);
+
+            if (res != CURLE_OK) {
+                // handle curl error
+                std::cout << "curl_easy_perform failed: " << curl_easy_strerror(res) << std::endl;
+            }
+            else {
+                std::cout << "Downloading: " << filename << std::endl;
+            }
+        }
+        else {
+            std::cout << "error opening output file: " << outputpath << std::endl;
+        }
+
+        // cleanup curl handle
+        curl_easy_cleanup(curl);
+    }
+    else {
+        std::cout << "failed to initialize curl" << std::endl;
     }
 
     // add the file names to the file_names vector if list is true
     if (list) {
-        file_names.push_back(fileName);
+        file_names.push_back(filename);
     }
     if (install) {
-        userPreset = fileName;
+        userPreset = filename;
     }
 }
 
