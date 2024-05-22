@@ -146,6 +146,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\miniz.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\curl\curl.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="src\curl\typecheck-gcc.h" />
     <ClInclude Include="src\curl\urlapi.h" />
     <ClInclude Include="src\json.hpp" />
+    <ClInclude Include="src\miniz.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="src\curl\libcurl_a.lib" />
