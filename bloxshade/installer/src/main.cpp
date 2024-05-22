@@ -20,6 +20,9 @@ namespace fs = std::filesystem;
 #define CURL_STATICLIB
 #include "curl/curl.h"
 
+// miniz
+#include "miniz.h"
+
 // fopen
 #pragma warning(disable : 4996)
 
@@ -179,23 +182,46 @@ void downloadFile(const std::string& url, const std::string& outputdirectory, bo
 void extractFile(const std::string& filePath, const std::string& outputDirectory) {
     // filename
     std::string filename = std::filesystem::path(filePath).filename().string();
-    // ps command
-    std::wstring wFilePath(filePath.begin(), filePath.end());
-    std::wstring wOutputDirectory(outputDirectory.begin(), outputDirectory.end());
-    std::wstring wCommand = L"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -Command \"$ProgressPreference = 'SilentlyContinue'; Expand-Archive -Path '" + wFilePath + L"' -DestinationPath '" + wOutputDirectory + L"'\"";
 
-    // create process parameters
-    STARTUPINFOW si = { sizeof(STARTUPINFO) };
-    PROCESS_INFORMATION pi;
-    BOOL success = CreateProcessW(NULL, const_cast<LPWSTR>(wCommand.c_str()), NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &si, &pi);
-
-    // wait for process to finish
-    if (success) {
-        WaitForSingleObject(pi.hProcess, INFINITE);
-        CloseHandle(pi.hProcess);
-        CloseHandle(pi.hThread);
+    // read the archive
+    mz_zip_archive zip_archive;
+    memset(&zip_archive, 0, sizeof(zip_archive));
+    if (!mz_zip_reader_init_file(&zip_archive, filePath.c_str(), 0)) {
+        std::cerr << "failed to open zip file: " << filePath << std::endl;
+        return;
     }
 
+    // iterate through each file in the archive
+    int num_files = mz_zip_reader_get_num_files(&zip_archive);
+    for (int i = 0; i < num_files; i++) {
+        mz_zip_archive_file_stat file_stat;
+        if (!mz_zip_reader_file_stat(&zip_archive, i, &file_stat)) {
+            std::cerr << "failed to get file stat for index: " << i << std::endl;
+            continue;
+        }
+
+        std::string entry_name = file_stat.m_filename;
+
+        // output path
+        std::string output_path = outputDirectory + "\\" + entry_name;
+
+        // create directory for the each entry in the archive
+        if (entry_name.back() == '/') {
+            if (!std::filesystem::create_directories(output_path)) {
+                std::cerr << "failed to create directory: " << output_path << std::endl;
+            }
+            continue;
+        }
+
+        // extract file
+        std::filesystem::create_directories(std::filesystem::path(output_path).parent_path());
+        if (!mz_zip_reader_extract_to_file(&zip_archive, i, output_path.c_str(), 0)) {
+            std::cerr << "failed to extract file: " << entry_name << std::endl;
+        }
+    }
+
+    // close the zip file
+    mz_zip_reader_end(&zip_archive);
     std::cout << "Extracting file: " << filename << std::endl;
 }
 
