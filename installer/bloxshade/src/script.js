@@ -107,34 +107,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // toggle zoom
     function toggleZoomScreen(event) {
-        event.preventDefault();
+        if (!event.ctrlKey && !event.metaKey) {
+            event.preventDefault();
 
-        const zoomStep = 0.1;
-        const zoomMin = 0.1;
-        const zoomMax = 2;
+            const zoomStep = 0.1;
+            const zoomMin = 0.1;
+            const zoomMax = 2;
 
-        let currentZoom = parseFloat(document.body.style.zoom) || 1;
+            let currentZoom = parseFloat(document.body.style.zoom) || 1;
 
-        switch (event.key) {
-            case '+':
-            case '=':
-            case 'ArrowUp':
-                currentZoom = Math.min(currentZoom + zoomStep, zoomMax);
-                break;
-            case '-':
-            case '_':
-            case 'ArrowDown':
-                currentZoom = Math.max(currentZoom - zoomStep, zoomMin);
-                break;
-            case '0':
-            case 'Escape':
-                currentZoom = 1;
-                break;
-            default:
+            switch (event.key) {
+                case '+':
+                case '=':
+                case 'ArrowUp':
+                    currentZoom = Math.min(currentZoom + zoomStep, zoomMax);
+                    break;
+                case '-':
+                case '_':
+                case 'ArrowDown':
+                    currentZoom = Math.max(currentZoom - zoomStep, zoomMin);
+                    break;
+                case '0':
+                case 'Escape':
+                    currentZoom = 1;
+                    break;
+                default:
+            }
+
+            document.body.style.zoom = currentZoom.toFixed(1);
+            //console.log(currentZoom.toFixed(1));
         }
-
-        document.body.style.zoom = currentZoom.toFixed(1);
-        //console.log(currentZoom.toFixed(1));
     }
 
     document.addEventListener('keydown', toggleZoomScreen);
