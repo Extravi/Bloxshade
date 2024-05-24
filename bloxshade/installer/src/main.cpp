@@ -187,7 +187,7 @@ void extractFile(const std::string& filePath, const std::string& outputDirectory
     mz_zip_archive zip_archive;
     memset(&zip_archive, 0, sizeof(zip_archive));
     if (!mz_zip_reader_init_file(&zip_archive, filePath.c_str(), 0)) {
-        std::cerr << "failed to open zip file: " << filePath << std::endl;
+        std::cout << "failed to open zip file: " << filePath << std::endl;
         return;
     }
 
@@ -196,19 +196,18 @@ void extractFile(const std::string& filePath, const std::string& outputDirectory
     for (int i = 0; i < num_files; i++) {
         mz_zip_archive_file_stat file_stat;
         if (!mz_zip_reader_file_stat(&zip_archive, i, &file_stat)) {
-            std::cerr << "failed to get file stat for index: " << i << std::endl;
+            std::cout << "failed to get file stat for index: " << i << std::endl;
             continue;
         }
 
-        std::string entry_name = file_stat.m_filename;
-
         // output path
+        std::string entry_name = file_stat.m_filename;
         std::string output_path = outputDirectory + "\\" + entry_name;
 
         // create directory for the each entry in the archive
         if (entry_name.back() == '/') {
             if (!std::filesystem::create_directories(output_path)) {
-                std::cerr << "failed to create directory: " << output_path << std::endl;
+                // idc uwu
             }
             continue;
         }
@@ -216,7 +215,7 @@ void extractFile(const std::string& filePath, const std::string& outputDirectory
         // extract file
         std::filesystem::create_directories(std::filesystem::path(output_path).parent_path());
         if (!mz_zip_reader_extract_to_file(&zip_archive, i, output_path.c_str(), 0)) {
-            std::cerr << "failed to extract file: " << entry_name << std::endl;
+            std::cout << "failed to extract file: " << entry_name << std::endl;
         }
     }
 
@@ -277,12 +276,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     int argc;
     argv = CommandLineToArgvW(GetCommandLineW(), &argc);
     if (argv == NULL) {
-        std::cerr << "Failed to parse command line arguments." << std::endl;
+        std::cout << "Failed to parse command line arguments." << std::endl;
         return 1;
     }
 
     // comment out for output
     output();
+    // installer version
+    std::cout << "* Version: 2.8.0\n";
+    std::cout << "* Bloxshade Installer (developed by Extravi, https://extravi.dev/)\n";
+    std::cout << "* Copyright © 2024 Extravi\n";
+    std::cout << "* Source Code: https://github.com/Extravi/Bloxshade\n";
 
     // process arguments
     for (int i = 1; i < argc; ++i) {
@@ -367,7 +371,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         // read json
         std::ifstream file(path);
         if (!file.is_open()) {
-            std::cerr << "failed to open file" << std::endl;
+            std::cout << "failed to open file" << std::endl;
             return 1;
         }
 
@@ -376,7 +380,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
             file >> data;
         }
         catch (json::parse_error) {
-            std::cerr << "failed to read file" << std::endl;
+            std::cout << "failed to read file" << std::endl;
             return 1;
         }
 
@@ -491,7 +495,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         }
     }
     else {
-        std::cerr << "Error getting temporary folder path." << std::endl;
+        std::cout << "Error getting temporary folder path." << std::endl;
     }
 
     // fix arg called
@@ -519,10 +523,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
             MessageBoxW(NULL, L"Ansel menu fixed.", L"Success", MB_OK | MB_ICONINFORMATION);
         }
         catch (const std::filesystem::filesystem_error& ex) {
-            std::cerr << "Filesystem error: " << ex.what() << std::endl;
+            std::cout << "Filesystem error: " << ex.what() << std::endl;
         }
         catch (...) {
-            std::cerr << "An unexpected error occurred." << std::endl;
+            std::cout << "An unexpected error occurred." << std::endl;
         }
         return 0;
     }
