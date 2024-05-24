@@ -2,6 +2,7 @@
 Bloxshade installer source code.
 
 [![Downloads](https://img.shields.io/github/downloads/Extravi/Bloxshade/total)](https://github.com/Extravi/Bloxshade/releases)
+[![Version](https://img.shields.io/github/v/release/Extravi/Bloxshade?color=5885F4)](https://github.com/Extravi/Bloxshade/releases/latest)
 [![Discord](https://img.shields.io/discord/1204287310204502046?logo=discord&logoColor=white&label=discord&color=5885F4)](https://discord.gg/TNG5yHsEwu)
 [![Stars](https://img.shields.io/github/stars/Extravi/Bloxshade?style=social)](https://github.com/Extravi/Bloxshade/stargazers)
 
