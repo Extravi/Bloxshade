@@ -42,7 +42,7 @@ function App() {
     const links = [
       'https://www.youtube.com/channel/UCOZnRzWstxDLyW30TjWEevQ?sub_confirmation=1',
       'https://discord.gg/TNG5yHsEwu',
-      'https://reshade.me/',
+      'https://github.com/Extravi/Bloxshade',
       'https://extravi.dev/'
     ];
 
@@ -243,7 +243,7 @@ function App() {
         <div className="container">
           <label>
             <input id="box-2" type="checkbox" />
-            <span className="box">Visit reshade.me</span>
+            <span className="box">Visit Bloxshade GitHub</span>
           </label>
         </div>
         <div className="container">
