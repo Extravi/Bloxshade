@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "Setup - Bloxshade",
-    "version": "2.0.0"
+    "version": "2.8.0"
   },
   "tauri": {
     "allowlist": {
@@ -78,7 +78,9 @@
         "title": "Setup - Bloxshade",
         "width": 500,
         "theme": "Dark",
-        "center": true
+        "center": true,
+        "minWidth": 500,
+        "minHeight": 360
       }
     ]
   }
