@@ -5,6 +5,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <locale>
+#include <codecvt>
 #include <cstring>
 #include <Windows.h>
 #include <lmcons.h>
@@ -28,7 +30,7 @@ namespace fs = std::filesystem;
 #pragma warning(disable : 4996)
 
 // variables 
-char value[MAX_PATH];
+wchar_t value[MAX_PATH];
 DWORD valueSize = sizeof(value);
 bool bloxstrap = false;
 bool list = false;
@@ -60,33 +62,36 @@ void output() {
 }
 
 // 8.3 format
-std::string GetShortUsername() {
+std::wstring GetShortUsername() {
     // current username
-    char username[UNLEN + 1];
+    wchar_t username[UNLEN + 1];
     DWORD username_len = UNLEN + 1;
-    if (!GetUserNameA(username, &username_len)) {
-        std::cout << "failed to get the username" << std::endl;
-        return "";
+    if (!GetUserNameW(username, &username_len)) {
+        // failed to get the username
+        return L"";
     }
 
     // get the short path form of the user's home directory
-    std::string userProfilePath = "C:\\Users\\" + std::string(username);
-    DWORD bufferSize = GetShortPathNameA(userProfilePath.c_str(), NULL, 0);
+    std::wstring userProfilePath = L"C:\\Users\\" + std::wstring(username);
+    DWORD bufferSize = GetShortPathNameW(userProfilePath.c_str(), NULL, 0);
     if (bufferSize == 0) {
-        std::cout << "failed to get the short path name for: " << userProfilePath << std::endl;
-        return "";
+        // failed to get the short path name
+        return L"";
     }
 
-    std::vector<char> shortPathBuffer(bufferSize);
-    GetShortPathNameA(userProfilePath.c_str(), shortPathBuffer.data(), bufferSize);
+    std::vector<wchar_t> shortPathBuffer(bufferSize);
+    if (GetShortPathNameW(userProfilePath.c_str(), shortPathBuffer.data(), bufferSize) == 0) {
+        // failed to retrieve the short path name
+        return L"";
+    }
 
-    std::string shortPath(shortPathBuffer.begin(), shortPathBuffer.end() - 1);
+    std::wstring shortPath(shortPathBuffer.data());
 
     // extract the short username
-    size_t pos = shortPath.find_last_of("\\");
-    if (pos == std::string::npos) {
-        std::cout << "failed to extract short username from path: " << shortPath << std::endl;
-        return "";
+    size_t pos = shortPath.find_last_of(L"\\");
+    if (pos == std::wstring::npos) {
+        // failed to extract short username from path
+        return L"";
     }
 
     return shortPath.substr(pos + 1);
@@ -356,15 +361,18 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     LocalFree(argv);
 
     // roblox path
-    RegGetValueA(HKEY_CURRENT_USER, "Software\\Classes\\roblox-player\\shell\\open\\command", nullptr, RRF_RT_REG_SZ, nullptr, value, &valueSize);
+    RegGetValueW(HKEY_CURRENT_USER, L"Software\\Classes\\roblox-player\\shell\\open\\command", nullptr, RRF_RT_REG_SZ, nullptr, value, &valueSize);
 
-    // convert to C++ string
-    std::string robloxPath(value);
+    // convert string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::wstring wstrValue(value);
+    std::string robloxPath = converter.to_bytes(wstrValue);
 
     // 8.3 username format
-    std::string shortUsername = GetShortUsername();
+    std::wstring shortUsername = GetShortUsername();
+    std::string newShortUsername = converter.to_bytes(shortUsername);
     if (!shortUsername.empty()) {
-        std::cout << "Short username: " << shortUsername << std::endl;
+        std::cout << "Short username: " << newShortUsername << std::endl;
     }
     else {
         std::cout << "failed to get the short username" << std::endl;
@@ -373,15 +381,15 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     // replace username from robloxPath
     wchar_t username[UNLEN + 1];
     DWORD username_len = UNLEN + 1;
-    if (GetUserName(username, &username_len)) {
-        std::string narrowUsername(username, username + wcslen(username));
+    if (GetUserNameW(username, &username_len)) {
+        std::string narrowUsername = converter.to_bytes(username);
         size_t pos = robloxPath.find(narrowUsername);
         if (pos != std::string::npos) {
             robloxPath.erase(pos, narrowUsername.length());
-            robloxPath.insert(pos, shortUsername); // replace with 8.3 username format
+            robloxPath.insert(pos, newShortUsername); // replace with 8.3 username format
         }
         else {
-            std::cout << "username not found in the path" << std::endl;
+            std::cout << "username not found in the path: " << narrowUsername  << std::endl;
         }
     }
     else {
