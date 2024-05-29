@@ -322,7 +322,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     // comment out for output
     output();
     // installer version
-    std::cout << "* Version: 2.8.1\n";
+    std::cout << "* Version: 2.8.2\n";
     std::cout << "* Bloxshade Installer (developed by Extravi, https://extravi.dev/)\n";
     std::cout << "* Copyright © 2024 Extravi\n";
     std::cout << "* Source Code: https://github.com/Extravi/Bloxshade\n";
