@@ -401,8 +401,18 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         }
         else {
             std::cout << "Username not found in the path" << std::endl;
-            // find "/" pos
             std::vector<size_t> slashPositions;
+            // check if it is less than 3
+            if (slashPositions.size() < 3) {
+                std::cout << "Roblox path does not seem to exist" << std::endl;
+                // show message box
+                int result = MessageBoxW(nullptr, L"Roblox installation was not found. Do you want to download it?", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
+                if (result == IDOK) {
+                    ShellExecuteW(nullptr, L"open", L"https://www.roblox.com/download/client", nullptr, nullptr, SW_SHOWNORMAL);
+                }
+                return 0;
+            }
+            // find "/" pos
             for (size_t i = 0; i < robloxPath.length(); ++i) {
                 if (robloxPath[i] == '\\') {
                     slashPositions.push_back(i);
