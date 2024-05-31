@@ -461,6 +461,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     std::string path = robloxPath.substr(start, end - start);
     std::string roPath = robloxPath.substr(start, end - start);
 
+    // check the path
+    std::cout << "Path to check: " << path << std::endl;
+    if (path.find("C:\\Program Files") == 0 || path.find("C:\\Program Files (x86)") == 0) {
+        std::cout << "Program files is true" << std::endl;
+        MessageBox(NULL, L"It seems like Roblox is installed system-wide in the Program Files directory. Please install Roblox in a location other than the Program Files directory.", L"Information", MB_OK | MB_ICONWARNING);
+        return 0;
+    }
+    else {
+        std::cout << "Program files is false" << std::endl;
+    }
+
     // bloxstrap
     size_t BloxstrapPos = path.find("Bloxstrap.exe");
 
