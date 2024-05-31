@@ -404,6 +404,23 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
             std::vector<size_t> slashPositions;
             // check if it is less than 3
             if (slashPositions.size() < 3) {
+                // extract the path
+                size_t start = robloxPath.find('"') + 1;
+                size_t end = robloxPath.rfind('"');
+                std::string path = robloxPath.substr(start, end - start);
+                std::string roPath = robloxPath.substr(start, end - start);
+
+                // check the path
+                std::cout << "Path to check: " << path << std::endl;
+                if (path.find("C:\\Program Files") == 0 || path.find("C:\\Program Files (x86)") == 0) {
+                    std::cout << "Program files is true" << std::endl;
+                    MessageBox(NULL, L"It seems like Roblox is installed system-wide in the Program Files directory. Please install Roblox in a location other than the Program Files directory.", L"Information", MB_OK | MB_ICONWARNING);
+                    return 0;
+                }
+                else {
+                    std::cout << "Program files is false" << std::endl;
+                }
+
                 std::cout << "Roblox path does not seem to exist" << std::endl;
                 // show message box
                 int result = MessageBoxW(nullptr, L"Roblox installation was not found. Do you want to download it?", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
@@ -430,18 +447,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         std::cout << "failed to get the username" << std::endl;
     }
 
-    if (robloxPath == "") {
-        // show message box
-        int result = MessageBoxW(nullptr, L"Roblox installation was not found. Do you want to download it?", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
-        if (result == IDOK) {
-            ShellExecuteW(nullptr, L"open", L"https://www.roblox.com/download/client", nullptr, nullptr, SW_SHOWNORMAL);
-        }
-        return 0;
-    }
-    else {
-        std::cout << "Roblox install found" << std::endl;
-        std::cout << robloxPath << std::endl;
-    }
+    // Roblox seems to be installled from reg key
+    std::cout << "Roblox install found" << std::endl;
+    std::cout << robloxPath << std::endl;
 
     // kill any running Roblox process
     WinExec("taskkill /F /IM RobloxPlayerBeta.exe", SW_HIDE);
@@ -452,17 +460,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     size_t end = robloxPath.rfind('"');
     std::string path = robloxPath.substr(start, end - start);
     std::string roPath = robloxPath.substr(start, end - start);
-
-    // check the path
-    std::cout << "Path to check: " << path << std::endl;
-    if (path.find("C:\\Program Files") == 0 || path.find("C:\\Program Files (x86)") == 0) {
-        std::cout << "Program files is true" << std::endl;
-        MessageBox(NULL, L"It seems like Roblox is installed system-wide in the Program Files directory. Please install Roblox in a location other than the Program Files directory.", L"Information", MB_OK | MB_ICONWARNING);
-        return 0;
-    }
-    else {
-        std::cout << "Program files is false" << std::endl;
-    }
 
     // bloxstrap
     size_t BloxstrapPos = path.find("Bloxstrap.exe");
