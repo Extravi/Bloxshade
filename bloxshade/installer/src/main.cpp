@@ -45,11 +45,15 @@ bool fix = false;
 std::wstring url;
 std::string userPreset;
 bool install = false;
+bool open = false;
 
 // nvidia paths
 const std::string anselPath = "C:\\Program Files\\NVIDIA Corporation\\Ansel";
 const std::string presetsPath = "C:\\Program Files\\NVIDIA Corporation\\Ansel\\Custom";
 const std::string shadersPath = "C:\\Program Files\\NVIDIA Corporation\\Ansel\\FXShaders";
+
+// for bool open
+const std::wstring wPresetsPath = L"C:\\Program Files\\NVIDIA Corporation\\Ansel\\Custom";
 
 // install file
 const std::string installtxt = "C:\\Program Files\\Bloxshade\\install.txt";
@@ -363,6 +367,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
             MessageBoxW(NULL, L"Community presets were installed successfully.", L"Success", MB_OK | MB_ICONINFORMATION);
             return 0;
         }
+        else if (arg == L"-open") {
+            open = true;
+        }
         else {
             // pass
         }
@@ -584,6 +591,20 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
             }
         }
         return 0;
+    }
+
+    if (open) {
+        // verify if custom folder exist
+        if (fs::exists(presetsPath)) {
+            std::cout << "Custom folder true" << std::endl;
+            ShellExecuteW(nullptr, L"open", wPresetsPath.c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+            return 0;
+        }
+        else {
+            std::cout << "Custom folder false" << std::endl;
+            MessageBox(NULL, L"It seems like Nvidia Ansel is not installed on your computer. Please install the Ansel folder first using the Bloxshade installer.", L"Information", MB_OK | MB_ICONWARNING);
+            return 0;
+        }
     }
 
     // temp folder individual effects not working when they worked in the past fix
