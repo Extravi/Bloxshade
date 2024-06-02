@@ -181,6 +181,15 @@ function App() {
     }
   };
 
+  const openCustom = async () => {
+    const bloxshadeFolderPath = 'C:\\Program Files\\Bloxshade';
+    try {
+      invoke('cmd', { executable_path: `${bloxshadeFolderPath}\\installer.exe`, arguments: '-open' });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <div className="side-img"></div>
@@ -263,8 +272,8 @@ function App() {
         <button id="btn-1" className="btn-settings" onClick={fix}>Fix Bloxshade FX</button>
         <p className="p-settings">Install your own Ansel presets.</p>
         <button id="btn-2" className="btn-settings" onClick={importPreset}>Import your own Ansel preset</button>
-        <a id="dis" className="settings-settings" onClick={() => openLink('https://discord.com/invite/TNG5yHsEwu')}>Join our Discord server.</a>
-        <a className="settings-settings extravi" onClick={() => openLink('https://extravi.dev/')}>extravi.dev</a>
+        <a id="dis" className="settings-settings" onClick={() => openLink('https://discord.com/invite/TNG5yHsEwu')}>Discord</a>
+        <a className="settings-settings extravi-uwu" onClick={() => openCustom()}>Open the presets folder</a>
         <a id="uwu" className="settings-settings uwu">Back</a>
       </div>
       {/* content 4 */}
@@ -310,7 +319,7 @@ function App() {
           <div className='results-div'>
             <div className='results-row'>
               <p><span>Bloxshade</span></p>
-              <p><span className="highlight">Author: </span><span>Extravi</span><a className='uwu-rar' onClick={() => openLink('https://github.com/Extravi')}>Visit</a></p>
+              <p><span className="highlight">Author: </span><span>Extravi</span><a className='uwu-rar' onClick={() => openLink('https://extravi.dev/')}>Visit</a></p>
             </div>
           </div>
           <div className='results-div'>
