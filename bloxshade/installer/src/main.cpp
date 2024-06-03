@@ -387,10 +387,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     std::wstring wstrValue(value);
     std::string robloxPath = converter.to_bytes(wstrValue);
 
-    // extract the path
-    size_t start = robloxPath.find('"') + 1;
-    size_t end = robloxPath.rfind('"');
-
     // check if path is empty
     if (robloxPath == "") {
         // show message box
@@ -424,12 +420,15 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         else {
             std::cout << "Username not found in the path" << std::endl;
             // check if path is under the users directory
+            size_t start = robloxPath.find('"') + 1;
+            size_t end = robloxPath.rfind('"');
             std::string pathToC = robloxPath.substr(start, end - start);
             if (pathToC.find("C:\\Users") == 0) {
                 std::cout << "Users path is true" << std::endl;
             }
             else {
                 std::cout << "Users path is false" << std::endl;
+                std::cout << pathToC << std::endl;
                 // show message box
                 int result = MessageBoxW(nullptr, L"It looks like you're using Bloxstrap, and while Bloxshade does work with Bloxstrap, it's best to install it in your user folder. Clicking \"okay\" will allow the installer to continue, but it may fail. If that happens, try reinstalling Bloxstrap in your user folder under your user account.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
                 if (result == IDOK) {
@@ -470,11 +469,13 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     WinExec("taskkill /F /IM eurotrucks2.exe", SW_HIDE);
 
     // extract the path
+    size_t start = robloxPath.find('"') + 1;
+    size_t end = robloxPath.rfind('"');
     std::string path = robloxPath.substr(start, end - start);
     std::string roPath = robloxPath.substr(start, end - start);
 
     // check the path
-    std::cout << "Path to check: " << robloxPath << std::endl; // show the path
+    std::cout << "Path to check: " << path << std::endl; // show the path
     if (path.find("C:\\Program Files") == 0 || path.find("C:\\Program Files (x86)") == 0) {
         std::cout << "Program files is true" << std::endl;
         MessageBox(NULL, L"It seems like Roblox is installed system-wide in the Program Files directory. Please install Roblox in a location other than the Program Files directory.", L"Information", MB_OK | MB_ICONWARNING);
