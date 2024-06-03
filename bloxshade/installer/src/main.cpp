@@ -34,6 +34,7 @@ wchar_t value[MAX_PATH];
 DWORD valueSize = sizeof(value);
 bool bloxstrap = false;
 bool list = false;
+bool skip = false;
 std::string bloxstrapPath;
 std::string roPath;
 std::string defaultPath;
@@ -386,6 +387,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     std::wstring wstrValue(value);
     std::string robloxPath = converter.to_bytes(wstrValue);
 
+    // extract the path
+    size_t start = robloxPath.find('"') + 1;
+    size_t end = robloxPath.rfind('"');
+
     // check if path is empty
     if (robloxPath == "") {
         // show message box
@@ -418,19 +423,38 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         }
         else {
             std::cout << "Username not found in the path" << std::endl;
-            std::vector<size_t> slashPositions;
-            // find "/" pos
-            for (size_t i = 0; i < robloxPath.length(); ++i) {
-                if (robloxPath[i] == '\\') {
-                    slashPositions.push_back(i);
+            // check if path is under the users directory
+            std::string pathToC = robloxPath.substr(start, end - start);
+            if (pathToC.find("C:\\Users") == 0) {
+                std::cout << "Users path is true" << std::endl;
+            }
+            else {
+                std::cout << "Users path is false" << std::endl;
+                // show message box
+                int result = MessageBoxW(nullptr, L"It looks like you're using Bloxstrap, and while Bloxshade does work with Bloxstrap, it's best to install it in your user folder. Clicking \"okay\" will allow the installer to continue, but it may fail. If that happens, try reinstalling Bloxstrap in your user folder under your user account.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
+                if (result == IDOK) {
+                    skip = true;
+                }
+                else {
+                    return 0;
                 }
             }
-            size_t secondSlashPos = slashPositions[1];
-            size_t thirdSlashPos = slashPositions[2];
-            std::string newRobloxPath = robloxPath.substr(0, secondSlashPos + 1) + newShortUsername + robloxPath.substr(thirdSlashPos);
-            // set new path
-            robloxPath = newRobloxPath;
-            std::cout << "We set a new path trying something else" << std::endl;
+            if (!skip) {
+                std::string path = robloxPath.substr(start, end - start);
+                std::vector<size_t> slashPositions;
+                // find "/" pos
+                for (size_t i = 0; i < robloxPath.length(); ++i) {
+                    if (robloxPath[i] == '\\') {
+                        slashPositions.push_back(i);
+                    }
+                }
+                size_t secondSlashPos = slashPositions[1];
+                size_t thirdSlashPos = slashPositions[2];
+                std::string newRobloxPath = robloxPath.substr(0, secondSlashPos + 1) + newShortUsername + robloxPath.substr(thirdSlashPos);
+                // set new path
+                robloxPath = newRobloxPath;
+                std::cout << "We set a new path trying something else" << std::endl;
+            }
         }
     }
     else {
@@ -446,8 +470,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     WinExec("taskkill /F /IM eurotrucks2.exe", SW_HIDE);
 
     // extract the path
-    size_t start = robloxPath.find('"') + 1;
-    size_t end = robloxPath.rfind('"');
     std::string path = robloxPath.substr(start, end - start);
     std::string roPath = robloxPath.substr(start, end - start);
 
