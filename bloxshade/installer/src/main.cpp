@@ -396,17 +396,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         return 0;
     }
 
-    // check the path
-    if (robloxPath.find("C:\\Program Files") == 0 || robloxPath.find("C:\\Program Files (x86)") == 0) {
-        std::cout << "Path to check: " << robloxPath << std::endl; // only show the path if program file is true
-        std::cout << "Program files is true" << std::endl;
-        MessageBox(NULL, L"It seems like Roblox is installed system-wide in the Program Files directory. Please install Roblox in a location other than the Program Files directory.", L"Information", MB_OK | MB_ICONWARNING);
-        return 0;
-    }
-    else {
-        std::cout << "Program files is false" << std::endl;
-    }
-
     // 8.3 username format
     std::wstring shortUsername = GetShortUsername();
     std::string newShortUsername = converter.to_bytes(shortUsername);
@@ -461,6 +450,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     size_t end = robloxPath.rfind('"');
     std::string path = robloxPath.substr(start, end - start);
     std::string roPath = robloxPath.substr(start, end - start);
+
+    // check the path
+    std::cout << "Path to check: " << robloxPath << std::endl; // show the path
+    if (path.find("C:\\Program Files") == 0 || path.find("C:\\Program Files (x86)") == 0) {
+        std::cout << "Program files is true" << std::endl;
+        MessageBox(NULL, L"It seems like Roblox is installed system-wide in the Program Files directory. Please install Roblox in a location other than the Program Files directory.", L"Information", MB_OK | MB_ICONWARNING);
+        return 0;
+    }
+    else {
+        std::cout << "Program files is false" << std::endl;
+    }
 
     // bloxstrap
     size_t BloxstrapPos = path.find("Bloxstrap.exe");
