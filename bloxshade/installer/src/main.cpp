@@ -1,6 +1,6 @@
 // Description: Bloxshade installer source code.
 // Author: Dante (dante@extravi.dev)
-// Date: 2024-05-08
+// Date: 2024-06-03
 
 #include <iostream>
 #include <fstream>
