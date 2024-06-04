@@ -379,14 +379,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     else {
         std::cout << "Users path is false" << std::endl;
         std::cout << path << std::endl;
-        // show message box
-        int result = MessageBoxW(nullptr, L"It looks like you're using Bloxstrap, and while Bloxshade does work with Bloxstrap, it's best to install it in your user folder. Clicking \"okay\" will allow the installer to continue, but it may fail. If that happens, try reinstalling Bloxstrap in your user folder under your user account.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
-        if (result == IDOK) {
-            // continue
-        }
-        else {
-            return 0;
-        }
     }
 
     // Roblox seems to be installled from reg key
