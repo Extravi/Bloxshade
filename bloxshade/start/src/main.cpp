@@ -1,6 +1,6 @@
 // Description: Bloxshade installer source code.
 // Author: Dante (dante@extravi.dev)
-// Date: 2024-05-08
+// Date: 2024-06-04
 
 #include <iostream>
 #include <fstream>
@@ -48,6 +48,9 @@ bool ExtractEmbeddedExe(HRSRC hResInfo, HGLOBAL hResData, DWORD resourceSize,
 }
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow) {
+    std::locale::global(std::locale("en_US.UTF-8"));
+    std::cout.imbue(std::locale());
+
     if (!IsUserAnAdmin()) {
         MessageBox(NULL, L"Oops! You need to run this program as admin! >.< It's okay! If you don't have perms, ask your parent or guardian on how to run it as so!", L"Error", MB_ICONERROR | MB_OK);
         return 0;
