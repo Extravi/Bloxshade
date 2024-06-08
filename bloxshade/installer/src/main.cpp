@@ -69,7 +69,7 @@ void output() {
 std::vector<std::string> urls = {
     "https://github.com/CeeJayDK/SweetFX/archive/a792aee788c6203385a858ebdea82a77f81c67f0.zip",
     "https://github.com/prod80/prod80-ReShade-Repository/archive/1abde8e935ce60bd6def6fef849090c4e6b0a362.zip",
-    "https://github.com/Extravi/extravi.github.io/raw/940ac7272c02ef564af3a65e54d0f3aa6df46034/update/dependencies.zip",
+    "https://github.com/Extravi/extravi.github.io/raw/main/update/dependencies.zip",
     "https://github.com/crosire/reshade-shaders/archive/fb9dcb99034759cd437610b7657307d52f8086ff.zip",
     "https://github.com/martymcmodding/qUINT/archive/98fed77b26669202027f575a6d8f590426c21ebd.zip",
     "https://github.com/crosire/reshade-shaders/archive/1258f18337a1f186740a6c4cb747c1aa6f0d79a9.zip",
@@ -293,7 +293,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     // comment out for output
     output();
     // installer version
-    std::cout << "* Version: 2.8.6\n";
+    std::cout << "* Version: 2.8.7\n";
     std::cout << "* Bloxshade Installer (developed by Extravi, https://extravi.dev/)\n";
     std::cout << "* Copyright © 2024 Extravi\n";
     std::cout << "* Source Code: https://github.com/Extravi/Bloxshade\n";
