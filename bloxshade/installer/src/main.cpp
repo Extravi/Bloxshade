@@ -68,7 +68,7 @@ void output() {
 // urls
 std::vector<std::string> urls = {
     "https://github.com/CeeJayDK/SweetFX/archive/a792aee788c6203385a858ebdea82a77f81c67f0.zip",
-    "https://github.com/prod80/prod80-ReShade-Repository/archive/1abde8e935ce60bd6def6fef849090c4e6b0a362.zip",
+    "https://github.com/Extravi/prod80-ReShade-Repository/archive/75060ee709b6aa9eff9d0f8fbaaa18c9c3ab8e9f.zip",
     "https://github.com/Extravi/extravi.github.io/raw/main/update/dependencies.zip",
     "https://github.com/crosire/reshade-shaders/archive/fb9dcb99034759cd437610b7657307d52f8086ff.zip",
     "https://github.com/martymcmodding/qUINT/archive/98fed77b26669202027f575a6d8f590426c21ebd.zip",
@@ -76,7 +76,7 @@ std::vector<std::string> urls = {
     "https://github.com/Not-Smelly-Garbage/OldReshadeShaders/archive/86772ee94877f82a97c49af05b8bca84d9065de7.zip",
     "https://github.com/Fubaxiusz/fubax-shaders/archive/c83190dd11b26c75a51a1b452106c8d170771e28.zip",
     "https://github.com/Otakumouse/stormshade/archive/6dad6589fe505e998b01295dc6c647b031386e74.zip",
-    "https://github.com/Extravi/NiceGuy-Shaders/archive/refs/heads/main.zip",
+    "https://github.com/Extravi/NiceGuy-Shaders/archive/4e9c00f0fb00b74fbc2bd0e63d290c140e23d493.zip",
     "https://github.com/rj200/Glamarye_Fast_Effects_for_ReShade/archive/9dd9b826fa2cbea818ef1bc487e5f2e7f427c750.zip",
     "https://github.com/AlucardDH/dh-reshade-shaders/archive/f3ca553f9012caced93f273890d20ea427865fd5.zip",
     "https://github.com/BlueSkyDefender/AstrayFX/archive/910e3213a846b34dd65d94e84b61b61fca69dd6d.zip",
@@ -93,8 +93,8 @@ std::vector<std::string> paths = {
     "\\reshade-shaders-6b452c4a101ccb228c4986560a51c571473c517b\\ShadersAndTextures", // ReShade Nvidia
     "\\SweetFX-a792aee788c6203385a858ebdea82a77f81c67f0\\Shaders", // SweetFX
     "\\SweetFX-a792aee788c6203385a858ebdea82a77f81c67f0\\Textures",
-    "\\prod80-ReShade-Repository-1abde8e935ce60bd6def6fef849090c4e6b0a362\\Shaders", // prod80
-    "\\prod80-ReShade-Repository-1abde8e935ce60bd6def6fef849090c4e6b0a362\\Textures",
+    "\\prod80-ReShade-Repository-75060ee709b6aa9eff9d0f8fbaaa18c9c3ab8e9f\\Shaders", // prod80
+    "\\prod80-ReShade-Repository-75060ee709b6aa9eff9d0f8fbaaa18c9c3ab8e9f\\Textures",
     "\\reshade-shaders-fb9dcb99034759cd437610b7657307d52f8086ff\\Shaders", // ReShade Shaders
     "\\reshade-shaders-fb9dcb99034759cd437610b7657307d52f8086ff\\Textures",
     "\\qUINT-98fed77b26669202027f575a6d8f590426c21ebd\\Shaders", // qUINT
@@ -107,8 +107,8 @@ std::vector<std::string> paths = {
     "\\stormshade-6dad6589fe505e998b01295dc6c647b031386e74\\v4.X\\reshade-shaders\\Shader Library\\Recommended", // stormshade
     "\\stormshade-6dad6589fe505e998b01295dc6c647b031386e74\\v4.X\\reshade-shaders\\Shaders",
     "\\stormshade-6dad6589fe505e998b01295dc6c647b031386e74\\v4.X\\reshade-shaders\\Textures",
-    "\\NiceGuy-Shaders-main\\Shaders", // NiceGuy
-    "\\NiceGuy-Shaders-main\\Textures",
+    "\\NiceGuy-Shaders-4e9c00f0fb00b74fbc2bd0e63d290c140e23d493\\Shaders", // NiceGuy
+    "\\NiceGuy-Shaders-4e9c00f0fb00b74fbc2bd0e63d290c140e23d493\\Textures",
     "\\Glamarye_Fast_Effects_for_ReShade-9dd9b826fa2cbea818ef1bc487e5f2e7f427c750\\Shaders", // Glamarye
     "\\dh-reshade-shaders-f3ca553f9012caced93f273890d20ea427865fd5\\Shaders", // AlucardDH
     "\\dh-reshade-shaders-f3ca553f9012caced93f273890d20ea427865fd5\\Textures",
