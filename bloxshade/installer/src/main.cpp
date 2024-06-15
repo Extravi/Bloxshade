@@ -1,6 +1,6 @@
 // Description: Bloxshade installer source code.
 // Author: Dante (dante@extravi.dev)
-// Date: 2024-06-04
+// Date: 2024-06-14
 
 #include <iostream>
 #include <fstream>
@@ -293,7 +293,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     // comment out for output
     output();
     // installer version
-    std::cout << "* Version: 2.8.7\n";
+    std::cout << "* Version: 2.8.8\n";
     std::cout << "* Bloxshade Installer (developed by Extravi, https://extravi.dev/)\n";
     std::cout << "* Copyright © 2024 Extravi\n";
     std::cout << "* Source Code: https://github.com/Extravi/Bloxshade\n";
@@ -424,8 +424,20 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
         std::cout << data["VersionGuid"] << std::endl;
 
+        if (data["VersionGuid"].is_null()) {
+            std::cout << "trying something else" << std::endl;
+            std::cout << data["PlayerVersionGuid"] << std::endl;
+        }
+
         // set new path
-        std::string versionGuid = data["VersionGuid"];
+        std::string versionGuid;
+        if (data["VersionGuid"].is_null()) {
+            std::cout << "setting new versionGuid" << std::endl;
+            versionGuid = data["PlayerVersionGuid"];
+        }
+        else {
+            versionGuid = data["VersionGuid"];
+        }
         std::string versionsDir = "Versions\\";
         path.replace(BloxstrapPos, strlen("State.json"), versionsDir + versionGuid);
 
