@@ -105,6 +105,10 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("box-1").checked = true;
     });
 
+    waitForElementToExist("box-2", function () {
+        document.getElementById("box-2").checked = true;
+    });
+
     // toggle zoom
     function toggleZoomScreen(event) {
         if (!event.ctrlKey && !event.metaKey) {
