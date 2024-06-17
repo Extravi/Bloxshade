@@ -46,6 +46,7 @@ std::wstring url;
 std::string userPreset;
 bool install = false;
 bool open = false;
+bool dark = false;
 
 // nvidia paths
 const std::string anselPath = "C:\\Program Files\\NVIDIA Corporation\\Ansel";
@@ -82,7 +83,6 @@ std::vector<std::string> urls = {
     "https://github.com/BlueSkyDefender/AstrayFX/archive/910e3213a846b34dd65d94e84b61b61fca69dd6d.zip",
     "https://github.com/luluco250/FXShaders/archive/76365e35c48e30170985ca371e67d8daf8eb9a98.zip",
     "https://github.com/crosire/reshade-shaders/archive/6b452c4a101ccb228c4986560a51c571473c517b.zip",
-    "https://github.com/Extravi/extravi.github.io/raw/main/update/ansel-presets.zip",
     "https://github.com/Extravi/ansel-shaders/archive/c286b39f3dc680c6c98f154f512a5109e213aa67.zip",
     "https://github.com/bituq/ZealShaders/archive/e4753908efda49d5423f4e0395161608c9207e2e.zip",
     "https://github.com/Fubaxiusz/fubax-shaders-dev/archive/023c080ac489fbe09b1c8e2975eaee340d7a0745.zip"
@@ -293,7 +293,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     // comment out for output
     output();
     // installer version
-    std::cout << "* Version: 2.8.8\n";
+    std::cout << "* Version: 2.8.10\n";
     std::cout << "* Bloxshade Installer (developed by Extravi, https://extravi.dev/)\n";
     std::cout << "* Copyright © 2024 Extravi\n";
     std::cout << "* Source Code: https://github.com/Extravi/Bloxshade\n";
@@ -325,6 +325,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         }
         else if (arg == L"-open") {
             open = true;
+        }
+        else if (arg == L"-dark") {
+            dark = true;
         }
         else {
             // pass
@@ -650,6 +653,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         if (fs::is_regular_file(entry)) {
             moveFile(entry.path().string(), shadersPath);
         }
+    }
+
+    if (dark == true) {
+        downloadFile("https://github.com/Extravi/extravi.github.io/raw/main/update/ansel-presets-dark.zip", anselPath, list = true, install = false);
+        extractFile(anselPath + "\\" + "ansel-presets-dark.zip", anselPath);
+        fs::remove(anselPath + "\\" + "ansel-presets-dark.zip");
+    }
+    else {
+        downloadFile("https://github.com/Extravi/extravi.github.io/raw/main/update/ansel-presets.zip", anselPath, list = true, install = false);
+        extractFile(anselPath + "\\" + "ansel-presets.zip", anselPath);
+        fs::remove(anselPath + "\\" + "ansel-presets.zip");
     }
 
     // Ansel presets
