@@ -39,7 +39,7 @@ p {
 }
 
 .side-img {
-  background-image: url('/src/extravi-reshade.bmp');
+  background-image: url('/src/extravi-reshade.png');
   background-size: cover;
   background-position: center;
   width: 35%;
