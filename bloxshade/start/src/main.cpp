@@ -83,7 +83,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     }
     else {
         // show message box if edge webview2 runtime was not found
-        int result = MessageBoxW(nullptr, L"You seem to be missing the Edge WebView2 runtime. Do you want to install it? The installer requires Edge WebView2 for the user interface to work correctly.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
+        int result = MessageBoxW(nullptr, L"You seem to be missing the Edge WebView2 runtime. Do you want to install it? The installer requires Edge WebView2 for the user interface to work correctly. Please run the Edge WebView2 runtime setup as an administrator to ensure it installs correctly.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
         if (result == IDOK) {
             ShellExecuteW(nullptr, L"open", L"https://go.microsoft.com/fwlink/p/?LinkId=2124703", nullptr, nullptr, SW_SHOWNORMAL);
         }
