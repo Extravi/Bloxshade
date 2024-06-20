@@ -56,6 +56,40 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         return 0;
     }
 
+    // edge webview2
+    const TCHAR* hklmPath = TEXT("SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients\\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}");
+    const TCHAR* hkcuPath = TEXT("Software\\Microsoft\\EdgeUpdate\\Clients\\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}");
+
+    HKEY hklmKey = nullptr;
+    HKEY hkcuKey = nullptr;
+    LONG lRes1, lRes2;
+
+    // system wide key
+    lRes1 = RegOpenKeyEx(HKEY_LOCAL_MACHINE, hklmPath, 0, KEY_READ, &hklmKey);
+    // current user key
+    lRes2 = RegOpenKeyEx(HKEY_CURRENT_USER, hkcuPath, 0, KEY_READ, &hkcuKey);
+
+    if (lRes1 == ERROR_SUCCESS || lRes2 == ERROR_SUCCESS) {
+        // at least one of the keys exists
+        std::cout << "Registry key exists." << std::endl;
+
+        // close the opened keys if they were opened 
+        if (hklmKey != nullptr) {
+            RegCloseKey(hklmKey);
+        }
+        if (hkcuKey != nullptr) {
+            RegCloseKey(hkcuKey);
+        }
+    }
+    else {
+        // show message box if edge webview2 runtime was not found
+        int result = MessageBoxW(nullptr, L"You seem to be missing the Edge WebView2 runtime. Do you want to install it? The installer requires Edge WebView2 for the user interface to work correctly.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
+        if (result == IDOK) {
+            ShellExecuteW(nullptr, L"open", L"https://go.microsoft.com/fwlink/p/?LinkId=2124703", nullptr, nullptr, SW_SHOWNORMAL);
+        }
+        return 0;
+    }
+
     // kill any running process that may have the folder open
     std::wstring killCommandInstaller = L"cmd.exe /c taskkill /F /IM installer.exe";
     std::wstring killCommandSetup = L"cmd.exe /c taskkill /F /IM setup.exe";
