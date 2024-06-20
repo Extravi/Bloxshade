@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "Setup - Bloxshade",
-    "version": "2.8.0"
+    "version": "2.8.11"
   },
   "tauri": {
     "allowlist": {
