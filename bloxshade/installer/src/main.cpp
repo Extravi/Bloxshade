@@ -275,6 +275,12 @@ void verifyFiles(const std::string& path, const std::string& pathToVerify) {
     }
     else {
         std::cout << "Neither RobloxPlayerBeta.exe nor eurotrucks2.exe is installed" << std::endl;
+        // show message box
+        int result = MessageBoxW(nullptr, L"Roblox installation was not found. Do you want to download it?", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
+        if (result == IDOK) {
+            ShellExecuteW(nullptr, L"open", L"https://www.roblox.com/download/client", nullptr, nullptr, SW_SHOWNORMAL);
+        }
+        exit(0);
     }
 }
 
@@ -293,7 +299,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     // comment out for output
     output();
     // installer version
-    std::cout << "* Version: 2.8.10\n";
+    std::cout << "* Version: 2.8.11\n";
     std::cout << "* Bloxshade Installer (developed by Extravi, https://extravi.dev/)\n";
     std::cout << "* Copyright © 2024 Extravi\n";
     std::cout << "* Source Code: https://github.com/Extravi/Bloxshade\n";
