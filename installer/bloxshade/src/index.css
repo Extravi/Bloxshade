@@ -121,6 +121,22 @@ a:hover {
   font-style: normal;
 }
 
+.textbox-2 {
+  background-color: #1f1f1f;
+  height: 180px;
+  max-height: 180px;
+  width: 280px;
+  max-height: 280px;
+  overflow: auto;
+}
+
+.textbox-2 p {
+  font-family: "Source Code Pro", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
 .btn-2 {
   margin-top: 12px;
   color: #9CA3AF !important;
@@ -306,6 +322,12 @@ a:hover {
   }
 
   .textbox {
+    width: 188px;
+    height: 100px;
+    margin-top: -8px;
+  }
+
+  .textbox-2 {
     width: 188px;
     height: 100px;
     margin-top: -8px;
