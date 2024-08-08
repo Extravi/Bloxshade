@@ -128,6 +128,78 @@ function App() {
     }
   }
 
+  async function createBloxshadeNVFolder() {
+    const bloxshadeFolderPath = 'C:\\Program Files\\Bloxshade';
+    const installLogPath = `${bloxshadeFolderPath}\\install.txt`; // install log path
+
+    try {
+      await fs.writeFile(installLogPath, ''); // create install log file
+
+      // start installer
+      invoke('cmd', { executable_path: `${bloxshadeFolderPath}\\installer.exe`, arguments: '-nv' });
+
+      let lastReadPosition = 0;
+
+      while (true) {
+        const fileContent = await fs.readTextFile(installLogPath);
+
+        const newContent = fileContent.substring(lastReadPosition);
+        const lines = newContent.split('\n');
+
+        let newText = '';
+
+        for (const line of lines) {
+          if (line.trim() !== '') {
+            newText += `${line.trim()}<br>`;
+          }
+
+          if (line.trim() === '0') {
+            console.log('0');
+
+            // done installing go to last page
+            const element1: HTMLElement | null = document.getElementById("con-6");
+            const element2: HTMLElement | null = document.getElementById("con-0");
+
+            if (element1 && element2) {
+              element1.classList.remove("show");
+              element1.classList.add("hide");
+
+              element2.classList.remove("hide");
+              element2.classList.add("show");
+            } else {
+              console.error("One or both elements not found.");
+            }
+
+            return; // exit loop
+          }
+        }
+
+        // scroll down the textbox
+        const textbox: HTMLElement | null = document.getElementById('textbox-2');
+
+        function scrollTextbox(): void {
+          if (textbox) {
+            textbox.scrollTop = textbox.scrollHeight;
+          }
+        }
+
+        // update textbox
+        const textBox = document.querySelector('.textbox-2 p');
+        if (textBox) {
+          textBox.innerHTML += newText;
+          scrollTextbox();
+        }
+
+        lastReadPosition = fileContent.length;
+
+        await new Promise(resolve => setTimeout(resolve, 50)); // wait
+      }
+
+    } catch (error) {
+      console.error('Error creating Bloxshade folder:', error);
+    }
+  }
+
   async function shortcut() {
     const bloxshadeFolderPath = 'C:\\Program Files\\Bloxshade';
     const installLogPath = `${bloxshadeFolderPath}\\install.txt`; // install log path
@@ -176,15 +248,6 @@ function App() {
       console.log(source);
       // todo
       invoke('cmd', { executable_path: `${bloxshadeFolderPath}\\installer.exe`, arguments: `-install "${source}"` });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const openCustom = async () => {
-    const bloxshadeFolderPath = 'C:\\Program Files\\Bloxshade';
-    try {
-      invoke('cmd', { executable_path: `${bloxshadeFolderPath}\\installer.exe`, arguments: '-open' });
     } catch (error) {
       console.error(error);
     }
@@ -273,7 +336,7 @@ function App() {
         <p className="p-settings">Install your own Ansel presets.</p>
         <button id="btn-2" className="btn-settings" onClick={importPreset}>Import your own Ansel preset</button>
         <a id="dis" className="settings-settings" onClick={() => openLink('https://discord.com/invite/TNG5yHsEwu')}>Discord</a>
-        <a className="settings-settings extravi-uwu" onClick={() => openCustom()}>Open the presets folder</a>
+        <a className="settings-settings extravi-uwu" id="nv-uwu" onClick={createBloxshadeNVFolder}>Patch Nvidia App</a>
         <a id="uwu" className="settings-settings uwu">Back</a>
       </div>
       {/* content 4 */}
@@ -378,6 +441,16 @@ function App() {
           </div>
         </div>
         <a id="acknowledgements" className="settings">Back</a>
+      </div>
+        {/* content 6 */}
+        <div id="con-6" className="content hide">
+        <h1>Bloxshade - Improve Roblox<br></br>with shaders.</h1>
+        <h1 className="installing">Patching the Nvidia App...</h1>
+        <p>Please wait while Bloxshade is working.</p>
+        <div id="textbox-2" className="textbox-2">
+        <p></p>
+        </div>
+        <button className="btn btn-2">Next</button>
       </div>
     </>
   )
