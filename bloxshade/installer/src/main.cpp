@@ -47,6 +47,7 @@ std::string userPreset;
 bool install = false;
 bool open = false;
 bool dark = false;
+bool nv = false;
 
 // nvidia paths
 const std::string anselPath = "C:\\Program Files\\NVIDIA Corporation\\Ansel";
@@ -58,6 +59,9 @@ const std::wstring wPresetsPath = L"C:\\Program Files\\NVIDIA Corporation\\Ansel
 
 // install file
 const std::string installtxt = "C:\\Program Files\\Bloxshade\\install.txt";
+
+// nv app patch
+const std::string nvapp = "C:\\Program Files\\Bloxshade\\nv";
 
 // redirect std::cout to the install file
 void output() {
@@ -335,6 +339,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         else if (arg == L"-dark") {
             dark = true;
         }
+        else if (arg == L"-nv") {
+            nv = true;
+        }
         else {
             // pass
         }
@@ -590,6 +597,59 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         catch (...) {
             std::cout << "An unexpected error occurred." << std::endl;
         }
+        return 0;
+    }
+
+    // nv arg to install the nvidia app
+    if (nv) {
+        // nv arg called
+        std::cout << "nv arg called" << std::endl;
+        // verify bloxshade nv folder
+        if (fs::exists(nvapp)) {
+            std::cout << "nv folder true" << std::endl;
+            // reinstall folder
+            fs::remove_all(nvapp);
+            fs::create_directories(nvapp);
+        }
+        else {
+            std::cout << "nv folder false" << std::endl;
+            // create folder
+            fs::create_directories(nvapp);
+        }
+        downloadFile("https://us.download.nvidia.com/nvapp/client/10.0.1.256/NVIDIA_app_beta_v10.0.1.256.exe", nvapp, list = false, install = false);
+        downloadFile("https://github.com/Extravi/nv-profile/raw/main/7za.exe", nvapp, list = false, install = false);
+        downloadFile("https://raw.githubusercontent.com/Extravi/nv-profile/main/component_profiles.json", nvapp, list = false, install = false);
+        // extract the installer with 7zip
+        std::wstring command = L"cmd.exe /c \"cd \"C:\\Program Files\\Bloxshade\\nv\" && \"C:\\Program Files\\Bloxshade\\nv\\7za.exe\" x \"C:\\Program Files\\Bloxshade\\nv\\NVIDIA_app_beta_v10.0.1.256.exe\"\"";
+        // create process parameters
+        auto createAndCloseProcess = [](const std::wstring& command) {
+        STARTUPINFOW si = { sizeof(STARTUPINFO) };
+        PROCESS_INFORMATION pi;
+        if (CreateProcessW(NULL, const_cast<LPWSTR>(command.c_str()), NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &si, &pi)) {
+            WaitForSingleObject(pi.hProcess, INFINITE);
+            CloseHandle(pi.hProcess);
+            CloseHandle(pi.hThread);
+        }
+        };
+        // wait for process to finish
+        createAndCloseProcess(command);
+        // print update component path
+        std::cout << nvapp + "\\NvApp\\CEF\\UpdateFrameworkPlugins\\component_profiles.json" << std::endl;
+        // check if update component exist
+        if (fs::exists(nvapp + "\\NvApp\\CEF\\UpdateFrameworkPlugins\\component_profiles.json")) {
+            std::cout << "update component true" << std::endl;
+            // remove the file
+            fs::remove(nvapp + "\\NvApp\\CEF\\UpdateFrameworkPlugins\\component_profiles.json");
+            std::cout << "setting a new update component" << std::endl;
+            std::string nvappupdatecomponent = "C:\\Program Files\\Bloxshade\\nv\\NvApp\\CEF\\UpdateFrameworkPlugins";
+            // disable updates
+            moveFile(nvapp + "\\component_profiles.json", nvappupdatecomponent);
+            std::cout << "nvapp patched and updates disabled" << std::endl;
+        }
+        std::string nvappPath = "C:\\Program Files\\Bloxshade\\nv\\setup.exe";
+        // start installer
+        std::cout << "starting nvapp installer with updates disabled" << std::endl;
+        WinExec(nvappPath.c_str(), SW_HIDE);
         return 0;
     }
 
