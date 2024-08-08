@@ -620,6 +620,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         downloadFile("https://github.com/Extravi/nv-profile/raw/main/7za.exe", nvapp, list = false, install = false);
         downloadFile("https://raw.githubusercontent.com/Extravi/nv-profile/main/component_profiles.json", nvapp, list = false, install = false);
         // extract the installer with 7zip
+        std::wstring commandUninstall = L"C:\\Windows\\SysWOW64\\RunDll32.EXE \"C:\\Program Files\\NVIDIA Corporation\\Installer2\\InstallerCore\\NVI2.DLL\",UninstallPackage Display.NvApp";
         std::wstring command = L"cmd.exe /c \"cd \"C:\\Program Files\\Bloxshade\\nv\" && \"C:\\Program Files\\Bloxshade\\nv\\7za.exe\" x \"C:\\Program Files\\Bloxshade\\nv\\NVIDIA_app_beta_v10.0.1.256.exe\"\"";
         // create process parameters
         auto createAndCloseProcess = [](const std::wstring& command) {
@@ -632,6 +633,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         }
         };
         // wait for process to finish
+        std::cout << "uninstalling the nvidia app to proceed with installation" << std::endl;
+        createAndCloseProcess(commandUninstall);
+        std::cout << "nvidia app uninstalled getting ready to install the nvidia app" << std::endl;
         createAndCloseProcess(command);
         // print update component path
         std::cout << nvapp + "\\NvApp\\CEF\\UpdateFrameworkPlugins\\component_profiles.json" << std::endl;
