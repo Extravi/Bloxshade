@@ -96,6 +96,20 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // wait for nv-uwu
+    waitForElementToExist("nv-uwu", function () {
+        document.getElementById("nv-uwu").addEventListener("click", function () {
+            var element0 = document.getElementById("con-3");
+            var element1 = document.getElementById("con-6");
+
+            element0.classList.remove("show");
+            element0.classList.add("hide");
+
+            element1.classList.remove("hide");
+            element1.classList.add("show");
+        });
+    });
+
     // wait for checkbox
     waitForElementToExist("box-0", function () {
         document.getElementById("box-0").checked = true;
