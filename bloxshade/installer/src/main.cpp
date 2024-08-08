@@ -622,6 +622,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         // extract the installer with 7zip
         std::wstring commandUninstall = L"C:\\Windows\\SysWOW64\\RunDll32.EXE \"C:\\Program Files\\NVIDIA Corporation\\Installer2\\InstallerCore\\NVI2.DLL\",UninstallPackage Display.NvApp";
         std::wstring command = L"cmd.exe /c \"cd \"C:\\Program Files\\Bloxshade\\nv\" && \"C:\\Program Files\\Bloxshade\\nv\\7za.exe\" x \"C:\\Program Files\\Bloxshade\\nv\\NVIDIA_app_beta_v10.0.1.256.exe\"\"";
+        std::wstring commandStart = L"C:\\Program Files\\Bloxshade\\nv\\setup.exe";
         // create process parameters
         auto createAndCloseProcess = [](const std::wstring& command) {
         STARTUPINFOW si = { sizeof(STARTUPINFO) };
@@ -650,10 +651,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
             moveFile(nvapp + "\\component_profiles.json", nvappupdatecomponent);
             std::cout << "nvapp patched and updates disabled" << std::endl;
         }
-        std::string nvappPath = "C:\\Program Files\\Bloxshade\\nv\\setup.exe";
         // start installer
         std::cout << "starting nvapp installer with updates disabled" << std::endl;
-        WinExec(nvappPath.c_str(), SW_HIDE);
+        createAndCloseProcess(commandStart);
+        // exit output
+        std::cout << "0" << std::endl;
         return 0;
     }
 
