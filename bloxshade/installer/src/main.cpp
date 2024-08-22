@@ -723,13 +723,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
                                     for (unsigned int settingId : settingIds) {
                                         result = NvAPI_DRS_RestoreProfileDefaultSetting(pSession, pProfile, settingId);
-                                        if (result == 0xffffff60) {
-                                            // setting is already at default
-                                            std::cout << "setting ID " << std::hex << settingId << " is already set to default." << std::endl;
-                                        }
-                                        else if (result != 0) {
+                                        if (result != 0) {
                                             // other error occurred
-                                            std::cout << "NvAPI_DRS_RestoreProfileDefaultSetting failed for setting ID " << std::hex << settingId << " with error code " << result << std::endl;
+                                            std::cout << "setting ID " << std::hex << settingId << " with return code " << result << " is already set to default." << std::endl;
                                         }
                                         else {
                                             // success
