@@ -3,6 +3,7 @@
 // Date: 2024-06-14
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
 #include <locale>
@@ -125,6 +126,24 @@ std::vector<std::string> paths = {
     "\\fubax-shaders-dev-023c080ac489fbe09b1c8e2975eaee340d7a0745\\Shaders", // fubax Shaders dev
     "\\fubax-shaders-dev-023c080ac489fbe09b1c8e2975eaee340d7a0745\\Textures"
 };
+
+// define function pointer types
+typedef int(*NvAPI_Initialize_t)();
+typedef void* (*NvAPI_QueryInterface_t)(unsigned int);
+typedef int(*NvAPI_DRS_CreateSession_t)(void**);
+typedef int(*NvAPI_DRS_LoadSettings_t)(void*);
+typedef int(*NvAPI_DRS_GetCurrentGlobalProfile_t)(void*, void**);
+typedef int(*NvAPI_DRS_RestoreProfileDefaultSetting_t)(void*, void*, unsigned int);
+typedef int(*NvAPI_DRS_SaveSettings_t)(void*);
+
+// debugging tools
+void printAddress(const char* name, void* address) {
+    std::cout << name << " address: " << std::hex << std::setw(18) << std::setfill('0') << reinterpret_cast<std::uintptr_t>(address) << std::dec << std::endl;
+}
+
+void printError(const char* message) {
+    std::cout << "Error: " << message << std::endl;
+}
 
 // download files
 size_t writedata(char* ptr, size_t size, size_t nmemb, void* stream) {
@@ -604,6 +623,147 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     if (nv) {
         // nv arg called
         std::cout << "nv arg called" << std::endl;
+        // driver profile
+        HMODULE hNvApi;
+        // load nvapi based on architecture
+        #ifdef _M_IX86
+            hNvApi = LoadLibrary(TEXT("nvapi.dll"));
+        #else
+            hNvApi = LoadLibrary(TEXT("nvapi64.dll"));
+        #endif
+
+        if (!hNvApi) {
+            printError("failed to load NVAPI DLL");
+        }
+        else {
+            std::cout << "successfully loaded NVAPI DLL" << std::endl;
+
+            // address for NvAPI_QueryInterface
+            auto NvAPI_QueryInterface = reinterpret_cast<NvAPI_QueryInterface_t>(GetProcAddress(hNvApi, "nvapi_QueryInterface"));
+            printAddress("NvAPI_QueryInterface", NvAPI_QueryInterface);
+            if (!NvAPI_QueryInterface) {
+                printError("failed to get address of NvAPI_QueryInterface");
+            }
+            else {
+                // address for NvAPI_Initialize
+                auto NvAPI_Initialize = reinterpret_cast<NvAPI_Initialize_t>(NvAPI_QueryInterface(0x0150E828));
+                printAddress("NvAPI_Initialize", NvAPI_Initialize);
+                if (!NvAPI_Initialize) {
+                    printError("failed to get address of NvAPI_Initialize");
+                }
+                else {
+                    int result = NvAPI_Initialize();
+                    if (result != 0) {
+                        std::cout << "NvAPI_Initialize failed with error code " << result << std::endl;
+                    }
+                    else {
+                        std::cout << "NvAPI_Initialize succeeded with return code: " << result << std::endl;
+                    }
+                }
+
+                // address for NvAPI_DRS_CreateSession
+                auto NvAPI_DRS_CreateSession = reinterpret_cast<NvAPI_DRS_CreateSession_t>(NvAPI_QueryInterface(0x0694D52E));
+                printAddress("NvAPI_DRS_CreateSession", NvAPI_DRS_CreateSession);
+                if (!NvAPI_DRS_CreateSession) {
+                    printError("failed to get address of NvAPI_DRS_CreateSession");
+                }
+                else {
+                    void* pSession = nullptr;
+                    int result = NvAPI_DRS_CreateSession(&pSession);
+                    if (result != 0) {
+                        std::cout << "NvAPI_DRS_CreateSession failed with error code " << result << std::endl;
+                    }
+                    else {
+                        std::cout << "NvAPI_DRS_CreateSession succeeded with return code: " << result << std::endl;
+
+                        // address for NvAPI_DRS_LoadSettings
+                        auto NvAPI_DRS_LoadSettings = reinterpret_cast<NvAPI_DRS_LoadSettings_t>(NvAPI_QueryInterface(0x375DBD6B));
+                        printAddress("NvAPI_DRS_LoadSettings", NvAPI_DRS_LoadSettings);
+                        if (!NvAPI_DRS_LoadSettings) {
+                            printError("failed to get address of NvAPI_DRS_LoadSettings");
+                        }
+                        else {
+                            result = NvAPI_DRS_LoadSettings(pSession);
+                            if (result != 0) {
+                                std::cout << "NvAPI_DRS_LoadSettings failed with error code " << result << std::endl;
+                            }
+                            else {
+                                std::cout << "NvAPI_DRS_LoadSettings succeeded with return code: " << result << std::endl;
+                            }
+                        }
+
+                        // address for NvAPI_DRS_GetCurrentGlobalProfile
+                        auto NvAPI_DRS_GetCurrentGlobalProfile = reinterpret_cast<NvAPI_DRS_GetCurrentGlobalProfile_t>(NvAPI_QueryInterface(0x617BFF9F));
+                        printAddress("NvAPI_DRS_GetCurrentGlobalProfile", NvAPI_DRS_GetCurrentGlobalProfile);
+                        if (!NvAPI_DRS_GetCurrentGlobalProfile) {
+                            printError("failed to get address of NvAPI_DRS_GetCurrentGlobalProfile");
+                        }
+                        else {
+                            void* pProfile = nullptr;
+                            result = NvAPI_DRS_GetCurrentGlobalProfile(pSession, &pProfile);
+                            if (result != 0) {
+                                std::cout << "NvAPI_DRS_GetCurrentGlobalProfile failed with error code " << result << std::endl;
+                            }
+                            else {
+                                std::cout << "NvAPI_DRS_GetCurrentGlobalProfile succeeded with return code: " << result << std::endl;
+
+                                // address for NvAPI_DRS_RestoreProfileDefaultSetting
+                                auto NvAPI_DRS_RestoreProfileDefaultSetting = reinterpret_cast<NvAPI_DRS_RestoreProfileDefaultSetting_t>(NvAPI_QueryInterface(0x53F0381E));
+                                printAddress("NvAPI_DRS_RestoreProfileDefaultSetting", NvAPI_DRS_RestoreProfileDefaultSetting);
+                                if (!NvAPI_DRS_RestoreProfileDefaultSetting) {
+                                    printError("failed to get address of NvAPI_DRS_RestoreProfileDefaultSetting");
+                                }
+                                else {
+                                    // restore default settings for each id
+                                    const unsigned int settingIds[] = {
+                                        0x1035DB89, // ANSEL_ALLOW_ID
+                                        0x1085DA8A, // ANSEL_ALLOWLISTED_ID
+                                        0x1075D972  // ANSEL_ENABLE_ID
+                                    };
+
+                                    for (unsigned int settingId : settingIds) {
+                                        result = NvAPI_DRS_RestoreProfileDefaultSetting(pSession, pProfile, settingId);
+                                        if (result == 0xffffff60) {
+                                            // setting is already at default
+                                            std::cout << "setting ID " << std::hex << settingId << " is already set to default." << std::endl;
+                                        }
+                                        else if (result != 0) {
+                                            // other error occurred
+                                            std::cout << "NvAPI_DRS_RestoreProfileDefaultSetting failed for setting ID " << std::hex << settingId << " with error code " << result << std::endl;
+                                        }
+                                        else {
+                                            // success
+                                            std::cout << "NvAPI_DRS_RestoreProfileDefaultSetting succeeded for setting ID " << std::hex << settingId << std::endl;
+                                        }
+                                    }
+                                }
+
+                                // address for NvAPI_DRS_SaveSettings
+                                auto NvAPI_DRS_SaveSettings = reinterpret_cast<NvAPI_DRS_SaveSettings_t>(NvAPI_QueryInterface(0xFcbc7E14));
+                                printAddress("NvAPI_DRS_SaveSettings", NvAPI_DRS_SaveSettings);
+                                if (!NvAPI_DRS_SaveSettings) {
+                                    printError("failed to get address of NvAPI_DRS_SaveSettings");
+                                }
+                                else {
+                                    // save the settings
+                                    result = NvAPI_DRS_SaveSettings(pSession);
+                                    if (result != 0) {
+                                        std::cout << "NvAPI_DRS_SaveSettings failed with error code " << result << std::endl;
+                                    }
+                                    else {
+                                        std::cout << "NvAPI_DRS_SaveSettings succeeded" << std::endl;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // cleanup
+        if (hNvApi) {
+            FreeLibrary(hNvApi);
+        }
         // verify bloxshade nv folder
         if (fs::exists(nvapp)) {
             std::cout << "nv folder true" << std::endl;
