@@ -322,7 +322,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     // comment out for output
     output();
     // installer version
-    std::cout << "* Version: 2.8.14\n";
+    std::cout << "* Version: 2.8.15\n";
     std::cout << "* Bloxshade Installer (developed by Extravi, https://extravi.dev/)\n";
     std::cout << "* Copyright © 2024 Extravi\n";
     std::cout << "* Source Code: https://github.com/Extravi/Bloxshade\n";
@@ -772,12 +772,37 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
             // create folder
             fs::create_directories(nvapp);
         }
-        downloadFile("https://us.download.nvidia.com/nvapp/client/10.0.1.256/NVIDIA_app_beta_v10.0.1.256.exe", nvapp, list = false, install = false);
-        downloadFile("https://github.com/Extravi/nv-profile/raw/main/7za.exe", nvapp, list = false, install = false);
-        downloadFile("https://raw.githubusercontent.com/Extravi/nv-profile/main/component_profiles.json", nvapp, list = false, install = false);
+        downloadFile("https://raw.githubusercontent.com/Extravi/extravi.github.io/main/update/nvapp.json", nvapp, list = false, install = false);
+        std::string nvInfo = nvapp + "\\nvapp.json";
+        std::cout << nvInfo << std::endl;
+        // read json
+        std::ifstream file(nvInfo);
+        if (!file.is_open()) {
+            std::cout << "failed to open file" << std::endl;
+            return 1;
+        }
+        json data;
+        try {
+            file >> data;
+        }
+        catch (json::parse_error) {
+            std::cout << "failed to read file" << std::endl;
+            return 1;
+        }
+        std::cout << data["source"] << std::endl;
+        std::cout << data["profile"] << std::endl;
+        std::cout << data["7za"] << std::endl;
+        std::cout << data["filename"] << std::endl;
+        // install nvapp
+        downloadFile(data["source"], nvapp, list = false, install = false);
+        downloadFile(data["7za"], nvapp, list = false, install = false);
+        downloadFile(data["profile"], nvapp, list = false, install = false);
         // extract the installer with 7zip
+        std::string filename = data["filename"];
         std::wstring commandUninstall = L"C:\\Windows\\SysWOW64\\RunDll32.EXE \"C:\\Program Files\\NVIDIA Corporation\\Installer2\\InstallerCore\\NVI2.DLL\",UninstallPackage Display.NvApp";
-        std::wstring command = L"cmd.exe /c \"cd \"C:\\Program Files\\Bloxshade\\nv\" && \"C:\\Program Files\\Bloxshade\\nv\\7za.exe\" x \"C:\\Program Files\\Bloxshade\\nv\\NVIDIA_app_beta_v10.0.1.256.exe\"\"";
+        std::string strCommand = "cmd.exe /c \"cd \"C:\\Program Files\\Bloxshade\\nv\" && \"C:\\Program Files\\Bloxshade\\nv\\7za.exe\" x \"C:\\Program Files\\Bloxshade\\nv\\" + filename + "\"\"";
+        std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+        std::wstring command = converter.from_bytes(strCommand);
         std::wstring commandStart = L"C:\\Program Files\\Bloxshade\\nv\\setup.exe";
         // create process parameters
         auto createAndCloseProcess = [](const std::wstring& command) {
