@@ -801,6 +801,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         std::string filename = data["filename"];
         std::wstring commandUninstall = L"C:\\Windows\\SysWOW64\\RunDll32.EXE \"C:\\Program Files\\NVIDIA Corporation\\Installer2\\InstallerCore\\NVI2.DLL\",UninstallPackage Display.NvApp";
         std::string strCommand = "cmd.exe /c \"cd \"C:\\Program Files\\Bloxshade\\nv\" && \"C:\\Program Files\\Bloxshade\\nv\\7za.exe\" x \"C:\\Program Files\\Bloxshade\\nv\\" + filename + "\"\"";
+        std::cout << strCommand << std::endl;
         std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
         std::wstring command = converter.from_bytes(strCommand);
         std::wstring commandStart = L"C:\\Program Files\\Bloxshade\\nv\\setup.exe";
@@ -815,25 +816,25 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         }
         };
         // wait for process to finish
-        std::cout << "uninstalling the nvidia app to proceed with installation" << std::endl;
+        std::cout << "Uninstalling the nvidia app to proceed with installation" << std::endl;
         createAndCloseProcess(commandUninstall);
-        std::cout << "nvidia app uninstalled getting ready to install the nvidia app" << std::endl;
+        std::cout << "Nvidia app uninstalled getting ready to install the nvidia app" << std::endl;
         createAndCloseProcess(command);
         // print update component path
         std::cout << nvapp + "\\NvApp\\CEF\\UpdateFrameworkPlugins\\component_profiles.json" << std::endl;
         // check if update component exist
         if (fs::exists(nvapp + "\\NvApp\\CEF\\UpdateFrameworkPlugins\\component_profiles.json")) {
-            std::cout << "update component true" << std::endl;
+            std::cout << "Update component true" << std::endl;
             // remove the file
             fs::remove(nvapp + "\\NvApp\\CEF\\UpdateFrameworkPlugins\\component_profiles.json");
-            std::cout << "setting a new update component" << std::endl;
+            std::cout << "Setting a new update component" << std::endl;
             std::string nvappupdatecomponent = "C:\\Program Files\\Bloxshade\\nv\\NvApp\\CEF\\UpdateFrameworkPlugins";
             // disable updates
             moveFile(nvapp + "\\component_profiles.json", nvappupdatecomponent);
-            std::cout << "nvapp patched and updates disabled" << std::endl;
+            std::cout << "nvapp patched" << std::endl;
         }
         // start installer
-        std::cout << "starting nvapp installer with updates disabled" << std::endl;
+        std::cout << "Starting nvapp installer" << std::endl;
         createAndCloseProcess(commandStart);
         // exit output
         std::cout << "0" << std::endl;
