@@ -40,6 +40,20 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // wait for communityPresets
+    waitForElementToExist("communityPresets", function () {
+        document.getElementById("communityPresets").addEventListener("click", function () {
+            var element0 = document.getElementById("con-3");
+            var element1 = document.getElementById("con-4");
+
+            element0.classList.remove("show");
+            element0.classList.add("hide");
+
+            element1.classList.remove("hide");
+            element1.classList.add("show");
+        });
+    });
+
     // wait for install
     waitForElementToExist("install", function () {
         document.getElementById("install").addEventListener("click", function () {

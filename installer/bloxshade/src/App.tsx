@@ -328,13 +328,15 @@ function App() {
       </div>
       {/* content 3 */}
       <div id="con-3" className="content hide">
-        <h1>Bloxshade - Improve Roblox<br></br>with shaders.</h1>
         <p className="p-settings">If you have already installed Bloxshade, you can manage Roblox from here or configure your installation.</p>
         <button id="btn-0" className="btn-settings" onClick={shortcut}>Create shortcuts</button>
         <p className="p-settings">Bloxshade FX issues (menu/effects not working).</p>
         <button id="btn-1" className="btn-settings" onClick={fix}>Fix Bloxshade FX</button>
-        <p className="p-settings">Install your own Ansel presets.</p>
+        <p className="p-settings">Install Ansel presets.</p>
         <button id="btn-2" className="btn-settings" onClick={importPreset}>Import your own Ansel preset</button>
+        <button id="communityPresets" className="btn-settings">Install community presets</button>
+        <br></br>
+        <br></br>
         <a id="dis" className="settings-settings" onClick={() => openLink('https://discord.com/invite/TNG5yHsEwu')}>Discord</a>
         <a className="settings-settings extravi-uwu" id="nv-uwu" onClick={createBloxshadeNVFolder}>Patch Nvidia App</a>
         <a id="uwu" className="settings-settings uwu">Back</a>
