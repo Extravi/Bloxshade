@@ -322,7 +322,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     // comment out for output
     output();
     // installer version
-    std::cout << "* Version: 2.8.15\n";
+    std::cout << "* Version: 2.8.16\n";
     std::cout << "* Bloxshade Installer (developed by Extravi, https://extravi.dev/)\n";
     std::cout << "* Copyright © 2024 Extravi\n";
     std::cout << "* Source Code: https://github.com/Extravi/Bloxshade\n";
@@ -430,7 +430,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     size_t RobloxPos = path.find("RobloxPlayerBeta.exe");
 
     if (BloxstrapPos != std::string::npos) {
-        path.replace(BloxstrapPos, strlen("Bloxstrap.exe"), "State.json");
+        path.replace(BloxstrapPos, strlen("Bloxstrap.exe"), "Roblox\\Player");
         bloxstrap = true;
     }
 
@@ -440,45 +440,13 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
     if (bloxstrap) {
         std::cout << "Bloxstrap is true" << std::endl;
-
-        // read json
-        std::ifstream file(path);
-        if (!file.is_open()) {
-            std::cout << "failed to open file" << std::endl;
-            return 1;
+        size_t pos = path.find("Roblox\\Player");
+        if (pos != std::string::npos) {
+            path = path.substr(0, pos + strlen("Roblox\\Player"));
         }
-
-        json data;
-        try {
-            file >> data;
-        }
-        catch (json::parse_error) {
-            std::cout << "failed to read file" << std::endl;
-            return 1;
-        }
-
-        std::cout << data["VersionGuid"] << std::endl;
-
-        if (data["VersionGuid"].is_null()) {
-            std::cout << "trying something else" << std::endl;
-            std::cout << data["PlayerVersionGuid"] << std::endl;
-        }
-
-        // set new path
-        std::string versionGuid;
-        if (data["VersionGuid"].is_null()) {
-            std::cout << "setting new versionGuid" << std::endl;
-            versionGuid = data["PlayerVersionGuid"];
-        }
-        else {
-            versionGuid = data["VersionGuid"];
-        }
-        std::string versionsDir = "Versions\\";
-        path.replace(BloxstrapPos, strlen("State.json"), versionsDir + versionGuid);
-
-        bloxstrapPath = path + "\\RobloxPlayerBeta.exe";
         // defaultPath is the path to the Roblox folder
         defaultPath = path;
+        bloxstrapPath = path + "\\RobloxPlayerBeta.exe";
         path = path + "\\eurotrucks2.exe";
     }
     else {
